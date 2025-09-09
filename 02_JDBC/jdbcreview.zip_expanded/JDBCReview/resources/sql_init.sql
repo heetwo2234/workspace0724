@@ -1,0 +1,30 @@
+-- JDBC 개인 실습용 sql
+
+DROP TABLE BOOK;
+
+CREATE TABLE BOOK(
+    BOOK_ID   NUMBER         PRIMARY KEY,
+    TITLE     VARCHAR2(100)   NOT NULL,
+    AUTHOR    VARCHAR2(20),
+    PUBLISHER VARCHAR2(50)
+);
+
+CREATE SEQUENCE SEQ_BOOK_ID;
+
+INSERT INTO BOOK 
+VALUES(SEQ_BOOK_ID, '자바의 정석', '남궁성', '한빛');
+
+INSERT INTO BOOK 
+VALUES(SEQ_BOOK_ID, '해리포터와 마법사의 돌', '최지원', '문학인');
+
+INSERT INTO BOOK 
+VALUES(SEQ_BOOK_ID, '어린왕자', '토마스', '사람');
+
+INSERT INTO BOOK 
+VALUES(SEQ_BOOK_ID, '1984', '조지 오웰', '열린');
+
+INSERT INTO BOOK 
+VALUES(SEQ_BOOK_ID, '데이터베이스개론', '허밍웨이', '한빛');
+
+
+

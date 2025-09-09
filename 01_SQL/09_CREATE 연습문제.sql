@@ -1,0 +1,125 @@
+-- 실습문제 --
+-- 도서관리 프로그램을 만들기 위한 테이블들 만들기 --
+-- 이때, 제약조건에 이름을 부여할 것
+-- 각 컬럼에 주석 달기
+
+-- 1. 출판사들에 대한 데이터를 담기 위한 출판사 테이블(TB_PUBLISHER)
+-- 컬럼 : PUB_NO (출판사 번호) - 기본키 (PUBLISHER_PK)
+--        PUB_NAME (출판사명) - NOT NULL (PUBLISHER_NN)
+--        PHONE (출판사 전화번호) - 제약조건 없음
+-- 샘플 3개 정도 생성
+DROP TABLE TB_PUBLISHER;
+
+CREATE TABLE TB_PUBLISHER(
+    PUB_NO NUMBER CONSTRAINT PUBLISHER_PK PRIMARY KEY,
+    PUB_NAME VARCHAR2(100) CONSTRAINT PUBLISHER_NN NOT NULL,
+    PHONE VARCHAR2(13),
+    CREATE_AT DATE
+);
+
+INSERT INTO TB_PUBLISHER (PUB_NO, PUB_NAME, PHONE)
+VALUES(1, '기역미디어', '010-1234-5678');
+
+INSERT INTO TB_PUBLISHER (PUB_NO, PUB_NAME, PHONE)
+VALUES(2, '니은미디어', '010-5678-9101');
+
+INSERT INTO TB_PUBLISHER (PUB_NO, PUB_NAME, PHONE)
+VALUES(3, '디귿미디어', '010-0000-1111');
+
+
+SELECT * FROM TB_PUBLISHER;
+
+-- 2. 도서들에 대한 데이터를 담기 위한 도서 테이블(TB_BOOK)
+-- 컬럼 : BK_NO (도서번호) - 기본키 (BOOK_PK)
+--        BK_TITLE (도서명) - NOT NULL (BOOK__NN_TITLE)
+--        BK_AUTHOR (저자명) - NOT NULL (BOOK__NN_AUTHOR)
+--        BK_PRICE (가격) - 제약조건 없음
+--        BK_PUB_NO (출판사 번호) - 외래키 (BOOK_FK), TB_PUBLISHER 테이블 참조
+--                                 이때 참조하고 있는 부모데이터 삭제 시 자식데이터도 삭제되도록 옵션 지정
+
+-- 샘플 5개 정도 생성
+
+DROP TABLE TB_BOOK;
+
+CREATE TABLE TB_BOOK(
+    BK_NO NUMBER CONSTRAINT BOOK_PK PRIMARY KEY,
+    BK_TITLE VARCHAR2(200) CONSTRAINT BOOK__NN_TITLE NOT NULL,
+    BK_AUTHOR VARCHAR2(100) CONSTRAINT BOOK__NN_AUTHOR NOT NULL,
+    BK_PRICE NUMBER,
+    BK_PUB_NO NUMBER REFERENCES TB_PUBLISHER(PUB_NO) ON DELETE CASCADE
+);
+
+INSERT INTO TB_BOOK
+VALUES(111, 'ㄱ','말','111', '1');
+
+INSERT INTO TB_BOOK
+VALUES(222, 'ㅇ','먼','222', '2');
+
+INSERT INTO TB_BOOK
+VALUES(333, 'ㄹ','청','333', '3');
+
+INSERT INTO TB_BOOK
+VALUES(444, 'ㅅ','참','444', '1');
+
+INSERT INTO TB_BOOK
+VALUES(555, 'ㄴ','아니','555', '2');
+
+
+
+SELECT * FROM TB_BOOK;
+
+
+
+
+-- 3. 회원에 대한 데이터를 담기 위한 회원 테이블(TB_MEMBER)
+-- 컬럼 : MEMBER_NO (회원번호) - 기본키 (MEMBER_PK)
+--        MEMBER_ID (아이디) - 중복금지 (MEMBER_UQ_ID)
+--        MEMBER_PWD (비밀번호) - NOT NULL (MEMBER_NN_PWD)
+--        MEMBER_NAME (회원명) - NOT NULL (MEMBER_NN_NAME)
+--        GENDER (성별) - M 또는 F로 제한 (MEMBER_CK_GEN)
+--        ADDRESS (주소) - 제약조건 없음
+--        PHONE (연락처) - 제약조건 없음
+--        STATUS (탈퇴여부) - 기본값 N, N 또는 Y만 허용 (MEMBER_CK_STA)
+--        ENROLL_DATE (가입일) - 기본값 SYSDATE, NOT NULL (MEMBER_NN_EN)
+
+-- 샘플 5개 정도 생성
+CREATE TABLE TB_MEMBER(
+    MEMBER_NO   NUMBER        CONSTRAINT MEMBER_PK PRIMARY KEY,
+    MEMBER_ID   VARCHAR2(20)  CONSTRAINT MEMBER_UQ_ID UNIQUE,
+    MEMBER_PWD  VARCHAR2(20)  CONSTRAINT MEMBER_NN_PWD NOT NULL,
+    MEMBER_NAME VARCHAR2(20)  CONSTRAINT MEMBER_NN_NAME NOT NULL,
+    GENDER      CHAR(1)       CONSTRAINT MEMBER_CK_GEN CHECK(GENDER IN('M','F')),
+    ADDRESS     VARCHAR2(50),
+    PHONE       CHAR(13),
+    STATUS      CHAR(1) DEFAULT 'N' CONSTRAINT MEMBER_CK_STA CHECK(STATUS IN('N', 'Y')),
+    ENROLL_DATE DATE    DEFAULT SYSDATE CONSTRAINT MEMBER_NN_EN NOT NULL
+);
+
+INSERT INTO TB_MEMBER VALUES(200, 'USER01', 'PASS01', '우남규', 'M', NULL, NULL, DEFAULT, DEFAULT);
+INSERT INTO TB_MEMBER VALUES(201, 'USER02', 'PASS02', '유남규', 'F', NULL, NULL, DEFAULT, DEFAULT);
+INSERT INTO TB_MEMBER VALUES(202, 'USER03', 'PASS03', '으남규', 'M', NULL, NULL, DEFAULT, DEFAULT);
+INSERT INTO TB_MEMBER VALUES(203, 'USER04', 'PASS04', '이남규', 'F', NULL, NULL, DEFAULT, DEFAULT);
+INSERT INTO TB_MEMBER VALUES(204, 'USER05', 'PASS05', '아남규', 'M', NULL, NULL, DEFAULT, DEFAULT);
+
+
+
+-- 4. 어떤 회원이 어떤 도서를 대여했는지에 대한 대여목록 테이블(TB_RENT)
+-- 컬럼 : RENT_NO (대여번호) - 기본키 (RENT_PK)
+--        RENT_MEM_NO (대여회원번호) - 외래키 (RENT_FK_MEM), TB_MEMBER 참조
+--                                     부모 데이터 삭제 시 자식데이터 값이 NULL이 되도록 지정
+--        RENT_BOOK_NO (대여도서번호) - 외래키 (RENT_FK_BOOK), TB_BOOK 참조
+--                                      부모 데이터 삭제 시 자식데이터 값이 NULL이 되도록 지정
+--        RENT_DATE (대여일) - 기본값 SYSDATE
+CREATE TABLE TB_RENT(
+    RENT_NO         NUMBER CONSTRAINT RENT_PK PRIMARY KEY,
+    RENT_MEM_NO     NUMBER,
+    RENT_BOOK_NO    NUMBER,
+    RENT_DATE       DATE DEFAULT SYSDATE,
+    CONSTRAINT RENT_FK_MEM FOREIGN KEY(RENT_MEM_NO) REFERENCES TB_MEMBER ON DELETE SET NULL,
+    CONSTRAINT RENT_FK_BOOK FOREIGN KEY(RENT_BOOK_NO) REFERENCES TB_BOOK ON DELETE SET NULL
+);
+-- 샘플 3개 정도 생성
+
+-- 대여목록 조회
+-- TB_RENT, TB_MEMBER, TB_BOOK 테이블을 JOIN하여 대여 정보를 조회
+
