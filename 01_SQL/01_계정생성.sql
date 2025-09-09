@@ -1,3 +1,4 @@
+--git test
 -- 사용자 계정 생성
 CREATE USER c##JDBC IDENTIFIED BY JDBC;
 
