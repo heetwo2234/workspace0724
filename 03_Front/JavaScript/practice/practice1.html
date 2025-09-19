@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
     <style>
         div{
             border: 1px solid black;
@@ -19,6 +24,7 @@
     <input type="color">
     <button onclick="changeColor();">변경</button>
 
+    <!--
     <script>
         // 어떤 이벤트가 발생했을 때, 어떤 동작을 하고싶은가?
         // 클릭이벤트가 발생했을 때 color-box요소의 배경색을 input[color]요소의 선택된 값으로 변경하고 싶다.
@@ -28,6 +34,12 @@
             colorBox.style.background = inputColor.value;
         }
     </script>
+    -->
+    <script>
+        function changeColor(){
+            $("#color-box").css("background", $("input[type=color]").val());
+        }
+    </script>
 
     <h3>문제2. 버튼에 따른 크기조절이 가능하게 만들어 보세요.</h3>
     <div id="size-box"></div>
@@ -35,12 +47,22 @@
     <input type="button" value="100x100" onclick="changeSize(100, 100);">
     <input type="button" value="200x200" onclick="changeSize(200, 200);">
 
+    <!--
     <script>
         //크기조절 버튼이 클릭됬을 때 각 버튼별 크기로 size-box의 크기를 변경하고싶다.
         function changeSize(width, height){
             const sizeBox = document.querySelector("#size-box");
             sizeBox.style.width = width + "px";
             sizeBox.style.height = height + "px";
+        }
+    </script>
+    -->
+    <script>
+        function changeSize(width, height){
+            $("#size-box").css({
+                "width" : width + "px",
+                "height" : height + "px"
+            })
         }
     </script>
 </body>
