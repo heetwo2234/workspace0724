@@ -3,7 +3,9 @@
 let todos = [];
 
 // ====== DOM 요소 ========
-const todoList = document.getElementById('todo-list');
+const todoList = document.getElementById('todo-list'); //할일목록 ul
+const clearCompletedBtn = document.getElementById('clear-completed-btn'); //완료목록삭제버튼
+const todoInput = document.getElementById('todo-input'); //todo입력창
 
 
 // ===== 초기화 함수 ========
@@ -17,13 +19,32 @@ function init() {
 function bindEvents() {
     const addBtn = document.getElementById('todo-add-btn');
     addBtn.addEventListener('click', addTodo);
+
+    todoInput.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){
+            addTodo();
+        }
+    })
+
+    clearCompletedBtn.addEventListener('click', clearCompletedTodos);
 }
 
 //=========== 데이터 조작 함수 =======================
+function clearCompletedTodos(){
+    let newTodos = [];
+
+    for(let todo of todos){
+        if(!todo.completed) {
+            newTodos.push(todo); //완료되지 않은 목록만 추가
+        }
+    }
+
+    todos = newTodos;
+    render(); //화면 업데이트
+}
+
 //새로운 할일을 추가하는 함수
 function addTodo() {
-    const todoInput = document.getElementById('todo-input');
-
     const text = todoInput.value.trim();
     if (!text) return; //빈문자열이면 함수 종료
 
@@ -40,6 +61,32 @@ function addTodo() {
     render(); //할일목록을 기준으로 UI에 적용
 }
 
+function deleteTodo(id){
+    //해당 ID를 목록에서 제거.
+    let newTodo = [];
+    for(let todo of todos){
+        if(todo.id === id)
+            continue;
+
+        newTodo.push(todo);
+    }
+
+    todos = newTodo;
+    render(); //할일목록을 기준으로 UI에 적용
+}
+
+function toggleTodo(id){
+    //해당 ID를 통해서 할일을 찾아 완료상태 -> 미완료, 미완료 -> 완료 변경.
+    for(let todo of todos){
+        if(todo.id === id) {
+            todo.completed = !todo.completed;
+            break;
+        }
+    }
+
+    render();
+}
+
 //=========== 화면 렌더링을 위한 함수 ====================
 //메인 렌더링 함수
 function render() {
@@ -52,6 +99,9 @@ function render() {
             todoItemRender(todo);
         })
     }
+
+    updateCount();
+    updateClearButton();
 }
 
 function emptyStateRender(){
@@ -63,7 +113,7 @@ function emptyStateRender(){
 
 function todoItemRender(todo) {
     const todoItem = document.createElement('li');
-    todoItem.className = 'todo-item';
+    todoItem.className = 'todo-item' + (todo.completed ? ' completed' : '');
 
     todoItem.innerHTML = `<div class="todo-checkbox ${todo.completed ? 'checked' : ''}"></div>
                             <span>${todo.content}</span>
@@ -71,12 +121,39 @@ function todoItemRender(todo) {
 
     //새로 생성된 요소들 중에서 이벤트가 필요한 부분만 가져오기.
     const checkBox = todoItem.querySelector('.todo-checkbox'); //todoItem내부에 있는 checkbox요소
-    
+    checkBox.addEventListener('click', function(){
+        toggleTodo(todo.id);
+    })
+
     const deleteBtn = todoItem.querySelector('.delete-btn'); //todoItem내부에 있는 deleteBtn요소
     deleteBtn.addEventListener('click', function(){
-        console.log(todo.id);
+        deleteTodo(todo.id);
     })
     todoList.appendChild(todoItem);
+}
+
+//남은 할일의 갯수를 구해서 화념넹 업데이트.
+function updateCount(){
+    const todoCount = document.getElementById('todo-count');
+    let count = 0;
+    for(let todo of todos){
+       if(!todo.completed) count++;
+    }
+
+    todoCount.innerHTML = `${count}개 남음`;
+}
+
+function updateClearButton(){
+    let isView = 'none';
+    for(let todo of todos){
+       if(todo.completed) {
+            isView = 'block';
+            break;
+       }
+    }
+
+    //완료된 목록이 있다면 버튼 표시, 없으면 숨김
+    clearCompletedBtn.style.display = isView;
 }
 
 
