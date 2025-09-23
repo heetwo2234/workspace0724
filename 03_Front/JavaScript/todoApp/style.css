@@ -155,3 +155,11 @@ header h1{
     font-size: 18px;
     font-weight: 600; 
 }
+
+.empty-state{
+    text-align: center;
+    padding: 40px 20px;
+    color: #5d688a;
+    font-size: 16px;
+    font-weight: 600;
+}
