@@ -95,44 +95,50 @@
 
     <h1 align="center">Welcome KH World</h1>
     <div class="login-area">
-        <!--로그인 전-->
-        <form action="${pageContext.request.contextPath}/login.me" method="post">
-            <table>
-                <tr>
-                    <th>아이디</th>
-                    <td><input type="text" name="userId" required></td>
-                </tr>
-                <tr>
-                    <th>비밀번호</th>
-                    <td><input type="password" name="userPwd" required></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                       <input type="submit" value="로그인">
-                       <input type="button" value="회원가입" onclick="enrollPage();"> 
-                    </td>
-                </tr>
-            </table>
-        </form>
-        <script>
-        console.log("${request.contextPath}")
-        	function enrollPage(){
-        		//location.href = "http://localhost:8000/jsp/views/member/enrollForm.jsp";
-        		//내부 디렉터리 구조를 유추할 수 있는 단서가 될 수 있기때문에 디렉터리구조를 url에 직접 노출하지 않고
-        		//서블릿을 통해 요청한다.
-        		
-        		location.href = "${pageContext.request.contextPath}/enrollForm.me";
-        		//단순한 페이지 요청도 servlet을 거처가도록 할 것(url에는 서버 요청을 위한 맵핑값이 나타나도록)
-        	}
-        </script>
-        <!--로그인 후-->
-        <!-- <div class="logout-area">
-            <b>최지원님</b>의 방문을 환영합니다. <br>
-            <div>
-                <a href="">마이페이지</a>
-                <a href="">로그아웃</a>
-            </div>
-        </div> -->
+    <c:choose>
+    	<c:when test="${empty sessionScope.loginMember}">
+	        <!--로그인 전-->
+	        <form action="${pageContext.request.contextPath}/login.me" method="post">
+	            <table>
+	                <tr>
+	                    <th>아이디</th>
+	                    <td><input type="text" name="userId" required></td>
+	                </tr>
+	                <tr>
+	                    <th>비밀번호</th>
+	                    <td><input type="password" name="userPwd" required></td>
+	                </tr>
+	                <tr>
+	                    <td colspan="2">
+	                       <input type="submit" value="로그인">
+	                       <input type="button" value="회원가입" onclick="enrollPage();"> 
+	                    </td>
+	                </tr>
+	            </table>
+	        </form>
+	        <script>
+	        console.log("${request.contextPath}")
+	        	function enrollPage(){
+	        		//location.href = "http://localhost:8000/jsp/views/member/enrollForm.jsp";
+	        		//내부 디렉터리 구조를 유추할 수 있는 단서가 될 수 있기때문에 디렉터리구조를 url에 직접 노출하지 않고
+	        		//서블릿을 통해 요청한다.
+	        		
+	        		location.href = "${pageContext.request.contextPath}/enrollForm.me";
+	        		//단순한 페이지 요청도 servlet을 거처가도록 할 것(url에는 서버 요청을 위한 맵핑값이 나타나도록)
+	        	}
+	        </script>
+        </c:when>
+        <c:otherwise>
+	        <!--로그인 후-->
+	        <div class="logout-area">
+	            <b>${loginMember.memberName}님</b>의 방문을 환영합니다. <br>
+	            <div>
+	                <a href="">마이페이지</a>
+	                <a href="">로그아웃</a>
+	            </div>
+	        </div> 
+        </c:otherwise>
+    </c:choose>
     </div>
 
     <nav class="main-nav">

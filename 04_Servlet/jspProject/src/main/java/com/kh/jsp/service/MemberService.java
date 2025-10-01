@@ -18,7 +18,17 @@ public class MemberService {
 		} else {
 			rollback(conn);
 		}
+		close(conn);
 		
 		return result;
+	}
+	
+	public Member loginMember(String userId, String userPwd) {
+		Connection conn = getConnection();
+		Member m = new MemberDao().loginMember(userId, userPwd, conn);
+		
+		close(conn);
+		
+		return m;
 	}
 }
