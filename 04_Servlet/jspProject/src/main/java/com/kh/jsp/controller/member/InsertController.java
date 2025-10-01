@@ -50,7 +50,16 @@ public class InsertController extends HttpServlet {
 		
 		Member m = Member.insertCreateMember(userId, userPwd, userName, phone, email, address, interest);
 		
-		new MemberService().insertMember(m);
+		int result = new MemberService().insertMember(m);
+		
+		if(result > 0) { //가입성공
+			request.getSession().setAttribute("alertMsg", "성공적으로 회원가입을 완료하였습니다.");
+			
+			response.sendRedirect(request.getContextPath());
+		} else { //가입실패
+			request.setAttribute("errorMsg", "회원가입에 실패하였습니다.");
+			request.getRequestDispatcher("views/common/error.jsp");
+		}
 	}
 
 	/**

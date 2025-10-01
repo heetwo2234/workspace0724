@@ -49,6 +49,5 @@ public class Member {
 		m.setInterest(interest);
 		
 		return m;
-		
 	}
 }

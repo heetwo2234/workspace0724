@@ -44,6 +44,7 @@ public class MemberDao {
 			pstmt.setString(6, m.getAddress());
 			pstmt.setString(7, m.getInterest());
 			
+			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
