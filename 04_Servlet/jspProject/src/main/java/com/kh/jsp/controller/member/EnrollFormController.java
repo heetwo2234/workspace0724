@@ -11,13 +11,13 @@ import java.io.IOException;
  * Servlet implementation class EnrollFromController
  */
 @WebServlet("/enrollForm.me")
-public class EnrollFromController extends HttpServlet {
+public class EnrollFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollFromController() {
+    public EnrollFormController() {
         super();
         // TODO Auto-generated constructor stub
     }
