@@ -13,16 +13,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class UpdateController
+ * Servlet implementation class UpdatePwdController
  */
-@WebServlet("/update.me")
-public class UpdateController extends HttpServlet {
+@WebServlet("/updatePwd.me")
+public class UpdatePwdController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateController() {
+    public UpdatePwdController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,32 +31,30 @@ public class UpdateController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//요청된 회원정보 -> 정보수정 -> int -> 성공(mypage), 실패(error)
+		//패드워드, 새로운패스워드 수정 -> user정보는 session을 활용
+		String userPwd = request.getParameter("userPwd");
+		String updatePwd = request.getParameter("updatePwd");
 		
-		String userId = request.getParameter("userId");
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String address = request.getParameter("address");
-		String[] interestArr = request.getParameterValues("interest");
+		HttpSession session = request.getSession();
+		Member loginMember = (Member)session.getAttribute("loginMember");
 		
-		String interest = "";
-		if(interestArr != null) {
-			interest = String.join(",", interestArr);
+		if(loginMember == null || !loginMember.getMemberPwd().equals(userPwd)) {
+			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+			return;
 		}
 		
-		Member updateMember = Member.updateCreateMember(userId, phone, email, address, interest);
-		
-		updateMember = new MemberService().updateMember(updateMember);
+		Member updateMember = new MemberService().updateMemberPwd(loginMember.getMemberId(), updatePwd);
 		if(updateMember == null) { //업데이트 실패
-			request.setAttribute("errorMsg", "회원정보 수정에 실패하였습니다");
+			request.setAttribute("errorMsg", "비밀번호 수정에 실패하였습니다");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 		} else {
-			HttpSession session = request.getSession();
 			session.setAttribute("loginMember", updateMember);
 			session.setAttribute("alertMsg", "성공적으로 수정하였습니다.");
 			
 			response.sendRedirect(request.getContextPath() + "/myPage.me");
 		}
+	
 	}
 
 	/**

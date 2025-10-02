@@ -50,4 +50,19 @@ public class Member {
 		
 		return m;
 	}
+	
+	public static Member updateCreateMember(String userId,
+											String phone, 
+											String email, 
+											String address, 
+											String interest) {
+		Member m = new Member();
+		m.setMemberId(userId);
+		m.setPhone(phone);
+		m.setEmail(email);
+		m.setAddress(address);
+		m.setInterest(interest);
+		
+		return m;
+	}
 }

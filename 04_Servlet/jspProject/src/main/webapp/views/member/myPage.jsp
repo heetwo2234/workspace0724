@@ -98,7 +98,7 @@
 					</tr>
 					<tr>
 						<td>* 이름</td>
-						<td><input type="text" name="userName" maxlength="8" readonly value="${loginMember.memberName}"></td>
+						<td><input type="text" maxlength="8" readonly value="${loginMember.memberName}"></td>
 					</tr>
 					<tr>
 						<td>전화번호</td>
@@ -181,7 +181,7 @@
 
 				<!-- Modal body -->
 				<div class="modal-body">
-					<form action="" method="">
+					<form action="${pageContext.request.contextPath}/updatePwd.me" method="post">
 						<div class="mb-3">
 							<label for="currentPwd" class="form-label">현재 비밀번호</label>
 							<input type="password" class="form-control" id="currentPwd" name="userPwd" required>
@@ -192,7 +192,7 @@
 						</div>
 						<div class="mb-3">
 							<label for="checkPwd" class="form-label">변경할 비밀번호 확인</label>
-							<input type="password" class="form-control" id="checkPwd" name="checkPwd" required>
+							<input type="password" class="form-control" id="checkPwd" required>
 						</div>
 						<div class="d-grid">
 							<button id="edit-pwd-btn" type="submit" class="btn btn-primary">비밀번호 변경</button>
