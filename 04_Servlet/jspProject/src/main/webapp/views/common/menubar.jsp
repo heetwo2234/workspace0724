@@ -99,8 +99,8 @@
 	                    <span class="fw-bold text-primary">${loginMember.memberName}님</span>의 방문을 환영합니다.
 	                </div>
 	                <div class="d-flex gap-2">
-	                    <a href="" class="btn btn-outline-primary btn-sm">마이페이지</a>
-	                    <a href="" class="btn btn-outline-danger btn-sm">로그아웃</a>
+	                    <a href="${pageContext.request.contextPath}/myPage.me" class="btn btn-outline-primary btn-sm">마이페이지</a>
+	                    <a href="${pageContext.request.contextPath}/logout.me" class="btn btn-outline-danger btn-sm">로그아웃</a>
 	                </div>
 	            </div>
         </c:otherwise>

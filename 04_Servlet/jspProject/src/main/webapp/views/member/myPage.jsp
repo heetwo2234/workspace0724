@@ -90,27 +90,27 @@
 	<div class="mypage-container">
 		<div class="mypage-card">
 			<h2>내 정보</h2>
-			<form action="" method="" id="update-form">
+			<form action="${pageContext.request.contextPath}/update.me" method="post" id="update-form">
 				<table class="form-table">
 					<tr>
 						<td>* 아이디</td>
-						<td><input type="text" name="userId" maxlength="15" readonly value=""></td>
+						<td><input type="text" name="userId" maxlength="15" readonly value="${loginMember.memberId}"></td>
 					</tr>
 					<tr>
 						<td>* 이름</td>
-						<td><input type="text" name="userName" maxlength="8" readonly value=""></td>
+						<td><input type="text" name="userName" maxlength="8" readonly value="${loginMember.memberName}"></td>
 					</tr>
 					<tr>
 						<td>전화번호</td>
-						<td><input type="text" name="phone" placeholder="- 포함해서 입력" value=""></td>
+						<td><input type="text" name="phone" placeholder="- 포함해서 입력" value="${loginMember.phone}"></td>
 					</tr>
 					<tr>
 						<td>이메일</td>
-						<td><input type="text" name="email" value=""></td>
+						<td><input type="text" name="email" value="${loginMember.email}"></td>
 					</tr>
 					<tr>
 						<td>주소</td>
-						<td><input type="text" name="address" value=""></td>
+						<td><input type="text" name="address" value="${loginMember.address}"></td>
 					</tr>
 					<tr>
 						<td>관심분야</td>
@@ -148,6 +148,16 @@
 						</td>
 					</tr>
 				</table>
+				<script>
+					const interest = "${loginMember.interest}";
+					const checkBoxArr = document.querySelectorAll("input[name=interest]");
+					
+					for(let box of checkBoxArr){
+						if(interest.includes(box.value)){
+							box.checked = true;
+						}
+					}
+				</script>
 
 				<div class="button-group">
 					<button type="submit" class="btn btn-success">정보수정</button>
