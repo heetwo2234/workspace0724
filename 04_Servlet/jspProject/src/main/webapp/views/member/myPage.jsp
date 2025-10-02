@@ -217,7 +217,7 @@
 
 				<!-- Modal body -->
 				<div class="modal-body">
-					<form action="" method="">
+					<form action="${pageContext.request.contextPath}/delete.me" method="post">
 						<div class="alert alert-warning" role="alert">
 							<strong>경고:</strong> 탈퇴 후 복구가 불가능합니다.<br>
 							정말로 탈퇴하시겠습니까?

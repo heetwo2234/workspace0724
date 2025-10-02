@@ -111,9 +111,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link px-4" href="">HOME</a></li>
+                <li class="nav-item"><a class="nav-link px-4" href="${pageContext.request.contextPath}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link px-4" href="">공지사항</a></li>
-                <li class="nav-item"><a class="nav-link px-4" href="">일반게시판</a></li>
+                <li class="nav-item"><a class="nav-link px-4" href="${pageContext.request.contextPath}/list.bo">일반게시판</a></li>
                 <li class="nav-item"><a class="nav-link px-4" href="">사진게시판</a></li>
             </ul>
         </div>

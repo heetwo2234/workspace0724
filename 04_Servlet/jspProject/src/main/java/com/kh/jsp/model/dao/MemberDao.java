@@ -184,6 +184,28 @@ public class MemberDao {
 		
 		return m;
 	}
+	
+	public int deleteMember(String memberId, Connection conn) {
+		//update -> 처리된 행 수
+		
+		int result = 0;	
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("deleteMember");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }
 
 
