@@ -15,4 +15,10 @@
 		AND BOARD_TYPE = 1
 		ORDER BY BOARD_NO DESC
 	</entry>
+	<entry key="increaseCount">
+		UPDATE BOARD
+		   SET COUNT = COUNT + 1
+		 WHERE BOARD_NO = ?
+		   AND STATUS = 'Y'
+	</entry>
 </properties>

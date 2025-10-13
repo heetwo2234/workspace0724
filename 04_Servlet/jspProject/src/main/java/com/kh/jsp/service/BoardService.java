@@ -18,5 +18,19 @@ public class BoardService {
 		
 		return list;
 	}
+	
+	public int increaseCount(int boardNo) {
+		Connection conn = getConnection();
+		
+		int result = new BoardDao().increaseCount(conn, boardNo);
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return result;
+	}
 
 }
