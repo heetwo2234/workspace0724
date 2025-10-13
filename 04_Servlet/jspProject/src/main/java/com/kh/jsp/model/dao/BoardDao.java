@@ -152,4 +152,31 @@ public class BoardDao {
 		
 		return list;
 	}
+	
+	public int updateBoard(Connection conn, Board board) {
+		//boardNo에 해당하는 board -> update -> int(1 또는 0)
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("updateBoard");		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getCategoryNo());
+			pstmt.setString(2, board.getBoardTitle());
+			pstmt.setString(3, board.getBoardContent());
+			pstmt.setInt(4, board.getBoardNo());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

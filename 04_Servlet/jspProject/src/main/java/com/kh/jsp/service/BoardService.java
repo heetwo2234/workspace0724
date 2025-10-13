@@ -55,8 +55,24 @@ public class BoardService {
 		return categroyList;
 	}
 	
-	public int boardContent(int boardNo,int categoryNo,String boardTitle,String boardContent) {
+	public int updateBoard(int boardNo,int categoryNo,String boardTitle,String boardContent) {
+		Connection conn = getConnection();
+		Board b = new Board();
+		b.setBoardNo(boardNo);
+		b.setCategoryNo(categoryNo);
+		b.setBoardTitle(boardTitle);
+		b.setBoardContent(boardContent);
 		
+		int result = new BoardDao().updateBoard(conn, b);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return result;
 	}
 
 }

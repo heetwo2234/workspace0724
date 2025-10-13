@@ -39,5 +39,13 @@
 		SELECT CATEGORY_NO,
 				CATEGORY_NAME
 		FROM CATEGORY
+	</entry>	
+	<entry key="updateBoard">
+		UPDATE BOARD
+		   SET CATEGORY_NO = ?,
+				BOARD_TITLE = ?,
+				BOARD_CONTENT = ?
+		 WHERE BOARD_NO = ?
+		   AND STATUS = 'Y'
 	</entry>
 </properties>
