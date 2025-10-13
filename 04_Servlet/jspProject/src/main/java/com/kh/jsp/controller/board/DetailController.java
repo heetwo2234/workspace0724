@@ -2,6 +2,7 @@ package com.kh.jsp.controller.board;
 
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.service.BoardService;
 
 import jakarta.servlet.ServletException;
@@ -36,9 +37,16 @@ public class DetailController extends HttpServlet {
 		
 		//board의 조회수 1 증가
 		int result = boardService.increaseCount(boardNo);
+		Board board = boardService.selectBoardByBoardNo(boardNo);
 		
-		
-		request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
+		if(result > 0 && board != null) {
+			request.setAttribute("board", board);
+			System.out.println(board);
+			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
+		} else {
+			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		}
 	}
 
 	/**

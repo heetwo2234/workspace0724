@@ -121,7 +121,7 @@
 		}
 	</style>
 </head>
-<body onload="init(${board.boardNo})">
+<body>
 	<jsp:include page="/views/common/menubar.jsp" />
 
 	<div class="board-container">
@@ -131,21 +131,21 @@
 			<table class="detail-table">
 				<tr>
 					<th>카테고리</th>
-					<td></td>
+					<td>${board.categoryName}</td>
 					<th>제목</th>
-					<td colspan="3"></td>
+					<td colspan="3">${board.boardTitle}</td>
 				</tr>
 				<tr>
 					<th>작성자</th>
-					<td></td>
+					<td>${board.memberId}</td>
 					<th>작성일</th>
-					<td></td>
+					<td>${board.createDate}</td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td colspan="3">
 						<div class="content-area">
-							
+							${board.boardContent}
 						</div>
 					</td>
 				</tr>
