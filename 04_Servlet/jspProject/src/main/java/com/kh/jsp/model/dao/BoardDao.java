@@ -1,0 +1,65 @@
+package com.kh.jsp.model.dao;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import static com.kh.jsp.common.JDBCTemplate.*;
+
+import com.kh.jsp.common.JDBCTemplate;
+import com.kh.jsp.model.vo.Board;
+
+public class BoardDao {
+	private Properties prop = new Properties();
+	
+	public BoardDao() {
+		super();
+		
+		String path = JDBCTemplate.class.getResource("/db/sql/board-mapper.xml").getPath();
+		
+		try {
+			prop.loadFromXML(new FileInputStream(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Board> selectAllBoard(Connection conn){
+		//select -> ResultSet(여러개) -> ArrayList
+		ArrayList<Board> list = new ArrayList<>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectAllBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Board b = new Board();
+				b.setBoardNo(rset.getInt("BOARD_NO"));
+				b.setCategoryName(rset.getString("CATEGORY_NAME"));
+				b.setBoardTitle(rset.getString("BOARD_TITLE"));
+				b.setMemberId(rset.getString("MEMBER_ID"));
+				b.setCount(rset.getInt("COUNT"));
+				b.setCreateDate(rset.getString("CREATE_DATE"));
+				
+				list.add(b);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
+}
