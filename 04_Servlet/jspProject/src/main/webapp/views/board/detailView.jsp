@@ -159,8 +159,10 @@
 
 			<div class="button-group">
 				<a class="btn btn-primary">목록가기</a>
-				<a class="btn btn-warning">수정하기</a>
-				<a class="btn btn-danger">삭제하기</a>
+				<c:if test="${loginMember != null && loginMember.memberId == board.memberId}">
+					<a class="btn btn-warning" href="${pageContext.request.contextPath}/updateForm.bo?bno=${board.boardNo}">수정하기</a>
+					<a class="btn btn-danger">삭제하기</a>
+				</c:if>
 			</div>
 		</div>
 

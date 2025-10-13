@@ -1,5 +1,7 @@
 package com.kh.jsp.model.dao;
 
+import static com.kh.jsp.common.JDBCTemplate.close;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,10 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import static com.kh.jsp.common.JDBCTemplate.*;
-
 import com.kh.jsp.common.JDBCTemplate;
 import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.model.vo.Category;
 
 public class BoardDao {
 	private Properties prop = new Properties();
@@ -104,6 +105,7 @@ public class BoardDao {
 			if(rset.next()) {
 				b = new Board();
 				b.setBoardNo(rset.getInt("BOARD_NO"));
+				b.setCategoryNo(rset.getInt("CATEGORY_No"));
 				b.setCategoryName(rset.getString("CATEGORY_NAME"));
 				b.setBoardTitle(rset.getString("BOARD_TITLE"));
 				b.setBoardContent(rset.getString("BOARD_CONTENT"));
@@ -118,5 +120,36 @@ public class BoardDao {
 		}
 		
 		return b;
+	}
+	
+	public ArrayList<Category> selectAllCategory(Connection conn){
+		//select -> ResultSet(여러개) -> ArrayList
+		ArrayList<Category> list = new ArrayList<>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectAllCategory");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Category category = new Category(
+							rset.getInt("CATEGORY_NO"),
+							rset.getString("CATEGORY_NAME")
+						);
+				
+				list.add(category);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
 	}
 }

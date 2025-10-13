@@ -24,6 +24,7 @@
 	<entry key="selectBoardByBoardNo">
 		SELECT BOARD_NO,
 				CATEGORY_NAME,
+				CATEGORY_NO,
 				BOARD_TITLE,
 				BOARD_CONTENT,
 				MEMBER_ID,
@@ -33,5 +34,10 @@
 		JOIN MEMBER M ON(BOARD_WRITER = MEMBER_NO)
 		WHERE B.STATUS = 'Y'
 		AND BOARD_NO = ?
+	</entry>
+	<entry key="selectAllCategory">
+		SELECT CATEGORY_NO,
+				CATEGORY_NAME
+		FROM CATEGORY
 	</entry>
 </properties>

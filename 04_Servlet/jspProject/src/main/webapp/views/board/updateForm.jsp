@@ -88,25 +88,36 @@
 		<div class="board-card">
 			<h2>일반게시글 수정하기</h2>
 
-			<form action="" method="" >
+			<form action="${pageContext.request.contextPath}/update.bo" method="post" >
+				<input type="hidden" name="bno" value="${board.boardNo}">
 				<table class="form-table">
 					<tr>
 						<th>카테고리</th>
 						<td>
 							<select name="category">
+								<c:forEach var="c" items="${categories}">
+									<c:choose>
+										<c:when test="${c.categoryNo == board.categoryNo}">
+											<option value="${c.categoryNo}" selected>${c.categoryName}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${c.categoryNo}">${c.categoryName}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<th>제목</th>
 						<td>
-							<input type="text" name="title" required value="">
+							<input type="text" name="title" required value="${board.boardTitle}">
 						</td>
 					</tr>
 					<tr>
 						<th>내용</th>
 						<td>
-							<textarea name="content" rows="10"></textarea>
+							<textarea name="content" rows="10">${board.boardContent}</textarea>
 						</td>
 					</tr>
 					<tr>

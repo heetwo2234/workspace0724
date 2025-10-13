@@ -1,12 +1,16 @@
 package com.kh.jsp.service;
 
-import static com.kh.jsp.common.JDBCTemplate.*;
+import static com.kh.jsp.common.JDBCTemplate.close;
+import static com.kh.jsp.common.JDBCTemplate.commit;
+import static com.kh.jsp.common.JDBCTemplate.getConnection;
+import static com.kh.jsp.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.kh.jsp.model.dao.BoardDao;
 import com.kh.jsp.model.vo.Board;
+import com.kh.jsp.model.vo.Category;
 
 public class BoardService {
 	
@@ -40,6 +44,19 @@ public class BoardService {
 	
 		close(conn);
 		return board;
+	}
+	
+	public ArrayList<Category> selectAllCategory() {
+		Connection conn = getConnection();
+		
+		ArrayList<Category> categroyList = new BoardDao().selectAllCategory(conn);
+	
+		close(conn);
+		return categroyList;
+	}
+	
+	public int boardContent(int boardNo,int categoryNo,String boardTitle,String boardContent) {
+		
 	}
 
 }
