@@ -179,4 +179,31 @@ public class BoardDao {
 		
 		return result;
 	}
+	
+	public int insertBoard(Connection conn, Board board) {
+		//새로운 board -> insert -> int(1 또는 0)
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("insertBoard");		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getCategoryNo());
+			pstmt.setString(2, board.getBoardTitle());
+			pstmt.setString(3, board.getBoardContent());
+			pstmt.setInt(4, board.getBoardWriter());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }
