@@ -82,4 +82,12 @@
 			?
 		)
 	</entry>
+	<entry key="selectAttachment">
+		SELECT FILE_NO,
+				ORIGIN_NAME,
+				CHANGE_NAME,
+				FILE_PATH
+		  FROM ATTACHMENT
+		 WHERE REF_BNO = ?
+	</entry>
 </properties>

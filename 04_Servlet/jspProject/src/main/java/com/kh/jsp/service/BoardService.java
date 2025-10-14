@@ -47,6 +47,15 @@ public class BoardService {
 		return board;
 	}
 	
+	public Attachment selectAttachment(int boardNo) {
+		Connection conn = getConnection();
+		
+		Attachment at = new BoardDao().selectAttachment(conn, boardNo);
+		
+		close(conn);
+		return at;
+	}
+	
 	public ArrayList<Category> selectAllCategory() {
 		Connection conn = getConnection();
 		

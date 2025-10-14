@@ -2,6 +2,7 @@ package com.kh.jsp.controller.board;
 
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.service.BoardService;
 
@@ -41,8 +42,10 @@ public class DetailController extends HttpServlet {
 		
 		if(result > 0 && board != null) {
 			//at조회 -> request담기
+			Attachment at = boardService.selectAttachment(board.getBoardNo());
 			
 			request.setAttribute("board", board);
+			request.setAttribute("at", at);
 			
 			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
 		} else {
