@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.kh.jsp.model.dao.BoardDao;
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 
@@ -75,10 +76,17 @@ public class BoardService {
 		return result;
 	}
 	
-	public int insertBoard(Board b) {
+	public int insertBoard(Board b, Attachment at) {
 		Connection conn = getConnection();
 		
-		int result = new BoardDao().insertBoard(conn, b);
+		BoardDao bDao = new BoardDao();
+		
+		int result = bDao.insertBoard(conn, b);
+		
+		if(at != null) {
+			result *= bDao.insertAttachment(conn, at);
+		}
+		
 		if(result > 0) {
 			commit(conn);
 		} else {

@@ -40,8 +40,10 @@ public class DetailController extends HttpServlet {
 		Board board = boardService.selectBoardByBoardNo(boardNo);
 		
 		if(result > 0 && board != null) {
+			//at조회 -> request담기
+			
 			request.setAttribute("board", board);
-			System.out.println(board);
+			
 			request.getRequestDispatcher("views/board/detailView.jsp").forward(request, response);
 		} else {
 			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
