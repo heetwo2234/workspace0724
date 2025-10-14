@@ -3,6 +3,7 @@ package com.kh.jsp.controller.board;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
 import com.kh.jsp.service.BoardService;
@@ -38,9 +39,11 @@ public class UpdateFormController extends HttpServlet {
 		
 		ArrayList<Category> categories = boardService.selectAllCategory();
 		Board b = boardService.selectBoardByBoardNo(boardNo);
+		Attachment at = boardService.selectAttachment(boardNo);
 		
 		request.setAttribute("categories", categories);
 		request.setAttribute("board", b);
+		request.setAttribute("at", at);
 		
 		request.getRequestDispatcher("views/board/updateForm.jsp").forward(request, response);
 	}

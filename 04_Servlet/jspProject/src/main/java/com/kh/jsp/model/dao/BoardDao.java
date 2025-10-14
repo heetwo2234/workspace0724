@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import com.kh.jsp.common.JDBCTemplate;
+import com.kh.jsp.common.vo.PageInfo;
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
@@ -31,7 +32,7 @@ public class BoardDao {
 		}
 	}
 	
-	public ArrayList<Board> selectAllBoard(Connection conn){
+	public ArrayList<Board> selectAllBoard(Connection conn, PageInfo pi){
 		//select -> ResultSet(여러개) -> ArrayList
 		ArrayList<Board> list = new ArrayList<>();
 		
@@ -41,7 +42,18 @@ public class BoardDao {
 		String sql = prop.getProperty("selectAllBoard");
 		
 		try {
+			/*
+			 * currentPage : 1 -> 1~10    boardLimit : 10
+			 * currentPage : 2 -> 11~20
+			 * currentPage : 3 -> 21~30
+			 */
+			int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit() + 1;
+			int endRow = startRow + pi.getBoardLimit() - 1;
+			
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
@@ -121,6 +133,32 @@ public class BoardDao {
 		}
 		
 		return b;
+	}
+	
+	public int selectAllBoardCount(Connection conn) {
+		//select -> ResultSet(한개) -> int
+		int listCount = 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectAllBoardCount");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				listCount = rset.getInt("COUNT");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return listCount;
 	}
 	
 	public Attachment selectAttachment(Connection conn, int boardNo){

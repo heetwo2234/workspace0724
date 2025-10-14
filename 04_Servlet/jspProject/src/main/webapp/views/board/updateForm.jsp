@@ -123,6 +123,9 @@
 					<tr>
 						<th>첨부파일</th>
 						<td>
+							<c:if test="${at != null}">
+								기존파일 : ${at.originName} <br><br>
+							</c:if>
 							<input type="file" name="upfile">
 						</td>
 					</tr>

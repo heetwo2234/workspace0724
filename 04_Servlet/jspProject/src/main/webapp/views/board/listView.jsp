@@ -120,17 +120,35 @@
             </table>
 
             <div class="pagination">
-                <button class="btn btn-primary">
-                &lt; 이전
-                </button>
-              	<button class="btn btn-outline-primary" >1</button>
-              	<button class="btn btn-outline-primary" >2</button>
-              	<button class="btn btn-outline-primary" >3</button>
-              	<button class="btn btn-outline-primary" >4</button>
-              	<button class="btn btn-outline-primary" >5</button>
-           	    <button class="btn btn-primary">
-                &lt; 다음
-                </button>
+            	<c:if test="${pi.currentPage > 1}">
+	                <button class="btn btn-primary"
+	                		onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${pi.currentPage - 1}'">
+	                	&lt; 이전
+	                </button>
+                </c:if>
+                
+                <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+                	<c:choose>
+                		<c:when test="${i == pi.currentPage}">
+                		    <button class="btn btn-outline-primary" disabled>
+		                		${i}
+		                	</button>
+                		</c:when>
+                		<c:otherwise>
+		                	<button class="btn btn-outline-primary" 
+		                		onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${i}'">
+		                		${i}
+		                	</button>
+                		</c:otherwise>
+                	</c:choose>
+                </c:forEach>    	
+              	
+              	<c:if test="${pi.currentPage < pi.maxPage}">
+	                <button class="btn btn-primary"
+	                		onclick="location.href='${pageContext.request.contextPath}/list.bo?cpage=${pi.currentPage + 1}'">
+	                	다음 &gt;
+	                </button>
+                </c:if>
             </div>
         </div>
     </div>
