@@ -75,15 +75,23 @@ public class BoardService {
 		return categroyList;
 	}
 	
-	public int updateBoard(int boardNo,int categoryNo,String boardTitle,String boardContent) {
+	public int updateBoard(Board b, Attachment at) {
+		//새로운 첨부파일이 존재하지 않을 때  -> (b, null) -> board update
+		//새로운 첨부파일이 존재하고 기존첨부파일이 존재할 때 -> (b, at(fileNo)) -> board update, attachment update
+		//새로운 첨부파일이 존재하고 기존첨부파일이 존재하지 않을 때 -> (b, at(refBoardNo)) -> board update, attachment insert
+	
 		Connection conn = getConnection();
-		Board b = new Board();
-		b.setBoardNo(boardNo);
-		b.setCategoryNo(categoryNo);
-		b.setBoardTitle(boardTitle);
-		b.setBoardContent(boardContent);
+		BoardDao boardDao = new BoardDao();
 		
-		int result = new BoardDao().updateBoard(conn, b);
+		int result = boardDao.updateBoard(conn, b);
+		
+		if(at != null) {
+			if(at.getFileNo() != 0) { //기존첨부파일이 존재할 때
+				result *= boardDao.updateAttachment(conn, at);
+			} else { //기존첨부파일이 존재하지 않을 때
+				result *= boardDao.insertNewAttachment(conn, at);
+			}
+		}
 		
 		if(result > 0) {
 			commit(conn);
