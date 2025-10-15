@@ -181,12 +181,24 @@
 				<thead>
 					<tr>
 						<th width="120">댓글작성</th>
-						<td>
-							<textarea id="reply-content" cols="50" rows="3"></textarea>
-						</td>
-						<td width="100">
-							<button class="btn btn-primary reply-btn" onclick="">댓글등록</button>
-						</td>
+						<c:choose>
+							<c:when test="${loginMember != null}">
+								<td>
+									<textarea id="reply-content" cols="50" rows="3"></textarea>
+								</td>
+								<td width="100">
+									<button class="btn btn-primary reply-btn" onclick="insertReply(${board.boardNo})">댓글등록</button>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td>
+									<textarea cols="50" rows="3" readonly>댓글등록은 로그인이 필요합니다.</textarea>
+								</td>
+								<td width="100">
+									<button class="btn btn-primary reply-btn" disabled>댓글등록</button>
+								</td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 				</thead>
 				<tbody>
@@ -195,5 +207,26 @@
 			</table>
 		</div>
 	</div>
+	
+	<script>
+	 function insertReply(bno){
+		const contentInput = document.querySelector("#reply-content");
+
+		 $.ajax({
+			 url: "rinsert.bo",
+			 type: "post",
+			 data: {
+				boardNo : bno,
+				content: contentInput.value
+			 },
+			 success: function(res){
+				console.log("응답 : ", res);
+			 },
+			 error: function(err){
+				console.log("댓글 작성 ajax 실패");
+			 }
+		 })
+	 }
+	</script>
 </body>
 </html>
