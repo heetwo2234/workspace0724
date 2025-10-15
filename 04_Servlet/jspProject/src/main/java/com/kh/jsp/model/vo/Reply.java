@@ -20,4 +20,6 @@ public class Reply {
 	private int replyWriter;
 	private String createDate;
 	private String status;
+	
+	private String memberId;
 }

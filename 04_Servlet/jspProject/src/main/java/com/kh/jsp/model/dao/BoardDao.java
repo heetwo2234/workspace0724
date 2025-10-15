@@ -136,6 +136,39 @@ public class BoardDao {
 		return b;
 	}
 	
+	public ArrayList<Reply> selectReplyByBoardNo(Connection conn, int boardNo){
+		//select -> ResultSet(여러개) -> List<Reply>
+		ArrayList<Reply> list = new ArrayList<>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectReplyByBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Reply r = new Reply();
+				r.setReplyNo(rset.getInt("REPLY_NO"));
+				r.setReplyContent(rset.getString("REPLY_CONTENT"));
+				r.setMemberId(rset.getString("MEMBER_ID"));
+				r.setCreateDate(rset.getString("CREATE_DATE"));
+				
+				list.add(r);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
+	
 	public int selectAllBoardCount(Connection conn) {
 		//select -> ResultSet(한개) -> int
 		int listCount = 0;

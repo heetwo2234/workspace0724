@@ -121,7 +121,7 @@
 		}
 	</style>
 </head>
-<body>
+<body onload="init(${board.boardNo})">
 	<jsp:include page="/views/common/menubar.jsp" />
 
 	<div class="board-container">
@@ -201,7 +201,7 @@
 						</c:choose>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="reply-container">
 					<!-- 댓글 목록이 여기에 동적으로 추가됩니다 -->
 				</tbody>
 			</table>
@@ -209,6 +209,42 @@
 	</div>
 	
 	<script>
+	function init(bno){
+		getReplyList(bno);
+	}
+		
+	 function getReplyList(bno){
+		 $.ajax({
+			 url: "rlist.bo",
+			 //contextType: "application/json" //요청데이터 타입
+			 dataType: "json", //응답 데이터 타입(json, text, html, xml...)
+			 data: {
+				boardNo : bno
+			 },
+			 success: function(res){
+				console.log("응답 : ", res);
+			 },
+			 error: function(err){
+				console.log("댓글 로드 ajax 실패");
+			 }
+		 })
+	 }
+	 
+	 function drawReplyList(replyList){
+		const replyContainer = document.querySelector("#reply-container");
+
+		//내부에 이미 그려진 dom을 제거
+		replyContainer.innerHTML = "";
+
+		for(let r of replyList){
+			const replyRow = document.createElement("tr");
+			replyRow.innerHTML = "<td>" + r.memberId + "</td>"
+		}
+
+		
+
+	 }
+	
 	 function insertReply(bno){
 		const contentInput = document.querySelector("#reply-content");
 
@@ -216,7 +252,7 @@
 			 url: "rinsert.bo",
 			 type: "post",
 			 data: {
-				boardNo : bno,
+				boardNo : bno, 
 				content: contentInput.value
 			 },
 			 success: function(res){
