@@ -16,6 +16,7 @@ import com.kh.jsp.common.vo.PageInfo;
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Category;
+import com.kh.jsp.model.vo.Reply;
 
 public class BoardDao {
 	private Properties prop = new Properties();
@@ -266,6 +267,32 @@ public class BoardDao {
 			pstmt.setString(2, board.getBoardTitle());
 			pstmt.setString(3, board.getBoardContent());
 			pstmt.setInt(4, board.getBoardWriter());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int insertReply(Connection conn, Reply r) {
+		//새로운 Reply -> insert -> int(1 또는 0)
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertReply");		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1,r.getReplyContent());
+			pstmt.setInt(2, r.getRefBoardNo());
+			pstmt.setInt(3, r.getReplyWriter());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
