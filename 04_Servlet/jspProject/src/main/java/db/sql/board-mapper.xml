@@ -137,6 +137,11 @@
 			?
 		)
 	</entry>
+	<entry key="deleteReply">
+		DELETE 
+		FROM REPLY
+		WHERE REPLY_NO = ?
+	</entry>
 	<entry key="selectReplyByBoardNo">
 		SELECT REPLY_NO,
 				REPLY_CONTENT,

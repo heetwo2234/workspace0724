@@ -228,7 +228,7 @@
 				boardNo : bno
 			 },
 			 success: function(res){
-				 callback(res);
+				 callback(res, bno);
 			 },
 			 error: function(err){
 				console.log("댓글 로드 ajax 실패");
@@ -236,7 +236,7 @@
 		 })
 	 }
 	 
-	 function drawReplyList(replyList){
+	 function drawReplyList(replyList, bno){
 		const replyContainer = document.querySelector("#reply-container");
 
 		//내부에 이미 그려진 dom을 제거
@@ -254,7 +254,7 @@
 			let deleteBtn = replyRow.querySelector("button");
 			deleteBtn.addEventListener("click", function(){
 				deleteReply(r.replyNo, function(){
-					console.log("삭제 성공");
+					getReplyList(bno, drawReplyList);
 				});
 			});
 
@@ -269,7 +269,8 @@
 				replyNo : replyNo, 
 			 },
 			 success: function(res){
-				 callback();
+				 if(res === "1")
+				 	callback();
 			 },
 			 error: function(err){
 				console.log("댓글 삭제 ajax 실패");
@@ -289,6 +290,7 @@
 			 },
 			 success: function(res){
 				 if(res === "1") {
+					contentInput.value = "";
 				 	getReplyList(bno, drawReplyList);
 				 }
 			 },

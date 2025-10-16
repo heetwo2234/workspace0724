@@ -35,6 +35,20 @@ public class BoardService {
 		return list;
 	}
 	
+	public int deleteReply(int replyNo){
+		Connection conn = getConnection();
+		
+		int result = new BoardDao().deleteReply(conn, replyNo);
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return result;
+	}
+	
 	public int increaseCount(int boardNo) {
 		Connection conn = getConnection();
 		
