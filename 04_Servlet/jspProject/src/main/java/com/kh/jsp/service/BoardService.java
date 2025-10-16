@@ -90,6 +90,15 @@ public class BoardService {
 		return at;
 	}
 	
+	public ArrayList<Attachment> selectAttachmentList(int boardNo) {
+		Connection conn = getConnection();
+		
+		ArrayList<Attachment> list = new BoardDao().selectAttachmentList(conn, boardNo);
+		
+		close(conn);
+		return list;
+	}
+	
 	public ArrayList<Category> selectAllCategory() {
 		Connection conn = getConnection();
 		
@@ -132,11 +141,31 @@ public class BoardService {
 		
 		BoardDao bDao = new BoardDao();
 		
+		b.setBoardType(1);
 		int result = bDao.insertBoard(conn, b);
 		
 		if(at != null) {
 			result *= bDao.insertAttachment(conn, at);
 		}
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return result;
+	}
+	
+	public int insertBoard(Board b, ArrayList<Attachment> list) {
+		Connection conn = getConnection();
+		
+		BoardDao bDao = new BoardDao();
+		
+		b.setBoardType(2);
+		int result = bDao.insertBoard(conn, b);
+		result *= bDao.insertAttachment(conn, list);
 		
 		if(result > 0) {
 			commit(conn);

@@ -52,6 +52,7 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
             overflow: hidden;
+            max-height: max-content;
         }
 
         .thumbnail:hover {
@@ -61,12 +62,13 @@
             cursor: pointer;
         }
 
-        .thumbnail img {
+        .thumbnail img{
             width: 100%;
             height: 200px;
             object-fit: cover;
             border-radius: 4px;
             margin-bottom: 10px;
+            display: block;
         }
 
         .thumbnail p {
@@ -114,12 +116,12 @@
 	                <a class="btn btn-primary" href="${pageContext.request.contextPath}/enrollForm.th">게시글 작성</a>
 	            </div> 
 			</c:if>
-			
+		
             <div class="list-area">   
             	<c:choose>
 	            	<c:when test="${not empty list}">
 	            		<c:forEach var="b" items="${list}">
-	            			<div class="thumnail">
+	            			<div class="thumbnail" onclick="location.href='${pageContext.request.contextPath}/detail.th?bno=${b.boardNo}'">
 	            				<img src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일이미지">
 	            				<p>
 	            					<span>No. ${b.boardNo} ${b.boardTitle}</span>

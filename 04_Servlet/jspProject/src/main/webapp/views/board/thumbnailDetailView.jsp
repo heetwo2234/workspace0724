@@ -114,20 +114,20 @@
                 <tr>
                     <th>제목</th>
                     <td colspan="3">
-                        
+                        ${board.boardTitle}
                     </td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td></td>
+                    <td>${board.memberId}</td>
                     <th>작성일</th>
-                    <td></td>
+                    <td>${board.createDate}</td>
                 </tr>
                 <tr>
                     <th>내용</th>
                     <td colspan="3">
                         <div class="content-area">
-                            
+                            ${board.boardContent}
                         </div>
                     </td>
                 </tr>
@@ -135,7 +135,7 @@
                     <th>대표이미지</th>
                     <td colspan="3">
                         <div class="thumbnail-area">
-                            <img src="" alt="대표이미지">
+                            <img src="${pageContext.request.contextPath}/${atList[0].filePath}${atList[0].changeName}" alt="대표이미지">
                         </div>
                     </td>
                 </tr>
@@ -143,14 +143,18 @@
                     <th>상세이미지</th>
                     <td colspan="3">
                         <div class="detail-images-area">
-                            
+                            <c:forEach var="at" items="${atList}">
+                            	<c:if test="${at.fileLevel == 2}">
+                            		<img src="${pageContext.request.contextPath}/${at.filePath}${at.changeName}" alt="상세이미지">
+                            	</c:if>
+                            </c:forEach>
                         </div>
                     </td>
                 </tr>
             </table>
 
             <div class="button-group">
-                <a href="" class="btn btn-primary">목록가기</a>
+                <a href="${pageContext.request.contextPath}/list.th" class="btn btn-primary">목록가기</a>
             </div>
         </div>
     </div>

@@ -40,7 +40,7 @@
 				MEMBER_ID,
 				TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS "CREATE_DATE"
 		FROM BOARD B
-		JOIN CATEGORY USING(CATEGORY_NO)
+		LEFT JOIN CATEGORY USING(CATEGORY_NO)
 		JOIN MEMBER M ON(BOARD_WRITER = MEMBER_NO)
 		WHERE B.STATUS = 'Y'
 		AND BOARD_NO = ?
@@ -69,7 +69,7 @@
 			BOARD_WRITER
 		) VALUES(
 			SEQ_BNO.NEXTVAL,
-			1,
+			?,
 			?,
 			?,
 			?,
@@ -87,6 +87,24 @@
 		) VALUES(
 			SEQ_FNO.NEXTVAL,
 			SEQ_BNO.CURRVAL,
+			?,
+			?,
+			?
+		)
+	</entry>
+	<entry key="insertThumbnailAttachment">
+		INSERT
+		INTO ATTACHMENT(
+			FILE_NO,
+			REF_BNO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL
+		) VALUES(
+			SEQ_FNO.NEXTVAL,
+			SEQ_BNO.CURRVAL,
+			?,
 			?,
 			?,
 			?
@@ -119,7 +137,8 @@
 		SELECT FILE_NO,
 				ORIGIN_NAME,
 				CHANGE_NAME,
-				FILE_PATH
+				FILE_PATH,
+				FILE_LEVEL
 		  FROM ATTACHMENT
 		 WHERE REF_BNO = ?
 	</entry>	
