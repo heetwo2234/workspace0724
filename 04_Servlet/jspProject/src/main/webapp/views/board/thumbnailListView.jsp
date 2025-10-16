@@ -109,19 +109,31 @@
         <div class="board-card">
             <h2>사진게시판</h2>
 
-            
-            <div class="write-btn-area">
-                <a class="btn btn-primary" href="">게시글 작성</a>
-            </div>
-            
-
-            <div class="list-area">
-               
-                <div class="empty-message">
-                    <h3>게시글이 없습니다.</h3>              
-                        <a href="" class="btn btn-primary">게시글 작성</a>
-                </div>
-
+            <c:if test="${not empty loginMember}">   
+	            <div class="write-btn-area">
+	                <a class="btn btn-primary" href="${pageContext.request.contextPath}/enrollForm.th">게시글 작성</a>
+	            </div> 
+			</c:if>
+			
+            <div class="list-area">   
+            	<c:choose>
+	            	<c:when test="${not empty list}">
+	            		<c:forEach var="b" items="${list}">
+	            			<div class="thumnail">
+	            				<img src="${pageContext.request.contextPath}/${b.thumbnailImg}" alt="썸네일이미지">
+	            				<p>
+	            					<span>No. ${b.boardNo} ${b.boardTitle}</span>
+	            					<small>조회수 : ${b.count} </small>
+	            				</p>
+	            			</div>
+	            		</c:forEach>
+	            	</c:when>
+	            	<c:otherwise>
+	    	            <div class="empty-message">
+		                    <h3>게시글이 없습니다.</h3>          
+		                </div>
+	            	</c:otherwise>  
+            	</c:choose>        
             </div>
         </div>
 	</div>

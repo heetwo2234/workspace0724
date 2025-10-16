@@ -35,6 +35,15 @@ public class BoardService {
 		return list;
 	}
 	
+	public ArrayList<Board> selectThumnailList(){
+		Connection conn = getConnection();
+		
+		ArrayList<Board> list = new BoardDao().selectThumnailList(conn);
+		close(conn);
+		
+		return list;
+	}
+	
 	public int deleteReply(int replyNo){
 		Connection conn = getConnection();
 		

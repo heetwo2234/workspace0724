@@ -146,7 +146,7 @@
 		<div class="board-card">
 			<h2>사진게시글 작성하기</h2>
 
-			<form action="" method="post" >
+			<form action="${pageContext.request.contextPath}/insert.th" method="post" enctype="multipart/form-data">
 				<table class="form-table">
 					<tr>
 						<th>제목</th>
@@ -163,7 +163,7 @@
 					<tr>
 						<th>대표이미지 *</th>
 						<td class="image-upload-area">
-							<div class="thumbnail-preview" onclick="">
+							<div class="thumbnail-preview" onclick="chooseFile('#file1')">
 								<img id="tumbnail-img" style="display: none;">
 								<div class="upload-placeholder" id="thumbnail-placeholder">
 									클릭하여 대표이미지를 선택하세요
@@ -175,17 +175,17 @@
 						<th>상세이미지</th>
 						<td>
 							<div class="detail-images">
-								<div class="detail-image-preview" onclick="">
+								<div class="detail-image-preview" onclick="chooseFile('#file2')">
 									<img id="content-img1" style="display: none;">
-									<div class="upload-placeholder">이미지 1</div>
+									<div class="upload-placeholder" id="img1-placeholder">이미지 1</div>
 								</div>
-								<div class="detail-image-preview" onclick="">
+								<div class="detail-image-preview" onclick="chooseFile('#file3')">
 									<img id="content-img2" style="display: none;">
-									<div class="upload-placeholder">이미지 2</div>
+									<div class="upload-placeholder" id="img2-placeholder">이미지 2</div>
 								</div>
-								<div class="detail-image-preview" onclick="">
+								<div class="detail-image-preview" onclick="chooseFile('#file4')">
 									<img id="content-img3" style="display: none;">
-									<div class="upload-placeholder">이미지 3</div>
+									<div class="upload-placeholder" id="img3-placeholder">이미지 3</div>
 								</div>
 							</div>
 						</td>
@@ -193,10 +193,10 @@
 				</table>
 
 				<div style="display: none;">
-					<input type="file" name="file1" id="file1" required onchange="">
-					<input type="file" name="file2" id="file2" onchange="">
-					<input type="file" name="file3" id="file3" onchange="">
-					<input type="file" name="file4" id="file4" onchange="">
+					<input type="file" name="file1" id="file1" required onchange="loadImg(this, '#tumbnail-img', '#thumbnail-placeholder')">
+					<input type="file" name="file2" id="file2" onchange="loadImg(this, '#content-img1', '#img1-placeholder')">
+					<input type="file" name="file3" id="file3" onchange="loadImg(this, '#content-img2', '#img2-placeholder')">
+					<input type="file" name="file4" id="file4" onchange="loadImg(this, '#content-img3', '#img3-placeholder')">
 				</div>
 
 				<div class="button-group">
@@ -206,5 +206,35 @@
 			</form>
 		</div>
 	</div>
+	<script>
+		//file input이 변경되었을 때 해당 이미지를 미리보기 img태그에 넣어 보여주기
+		function loadImg(changeInput, targetImgId, placeholderId){
+			console.log("이미지 변경됨")
+			const img = document.querySelector(targetImgId);
+			const placeholder = document.querySelector(placeholderId);
+
+			if(changeInput.files.length > 0){ //선택된 파일이 있는 경우
+				const reader = new FileReader();
+				//파일을 읽어서 Base64 인코딩된 문자열(Data URL)로 변환
+				reader.readAsDataURL(changeInput.files[0]);
+
+				//변환이 완료되었을 때 load이벤트를 실행
+				reader.onload = function(ev){ 
+					img.src = ev.target.result;
+					img.style.display = 'block';
+					placeholder.style.display = 'none';
+				}
+			} else {
+				img.src = null;
+				img.style.display = 'none';
+				placeholder.style.display = 'block';
+			}
+		}
+
+		function chooseFile(selector){
+			const fileInput = document.querySelector(selector);
+			fileInput.click();
+		}
+	</script>
 </body>
 </html>
