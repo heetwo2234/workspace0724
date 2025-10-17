@@ -5,7 +5,7 @@
   
 <mapper namespace="MemberMapper">
 	<!-- resultMap : 조회된 resultSet의 결과를 특정 객체에 맵핑할 맵핑정보를 기술하는 것 -->
-	<resultMap id="memberResultMap" type="com.kh.mybatis.model.vo.Member">
+	<resultMap id="memberResultMap" type="Member">
 		<result column="MEMBER_NO" property="memberNo"/>
 		<result column="MEMBER_ID" property="memberId"/>
 		<result column="MEMBER_PWD" property="memberPwd"/>
@@ -41,4 +41,32 @@
 		     AND MEMBER_PWD = #{memberPwd}
 		     AND STATUS = 'Y'
 	 </select>
+	 <select id="idCheck" parameterType="string" resultType="_int">
+		 SELECT COUNT(*) AS "COUNT"
+		  FROM MEMBER
+		 WHERE MEMBER_ID = #{checkId}
+	 </select>
+	 <insert id="insertMember" parameterType="Member">
+	 	INSERT INTO MEMBER
+		(
+			MEMBER_NO,
+			MEMBER_ID,
+			MEMBER_PWD,
+			MEMBER_NAME,
+			PHONE,
+			EMAIL,
+			ADDRESS,
+			INTEREST
+		)
+		VALUES(
+			SEQ_MNO.NEXTVAL, 
+			#{memberId}, 
+			#{memberPwd}, 
+			#{memberName}, 
+			#{phone}, 
+			#{email}, 
+			#{address}, 
+			#{interest}
+		)
+	 </insert>
 </mapper>
