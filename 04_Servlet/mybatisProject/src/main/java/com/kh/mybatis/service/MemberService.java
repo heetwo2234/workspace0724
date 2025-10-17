@@ -1,20 +1,20 @@
 package com.kh.mybatis.service;
 
-import static com.kh.jsp.common.JDBCTemplate.close;
-import static com.kh.jsp.common.JDBCTemplate.getConnection;
+import org.apache.ibatis.session.SqlSession;
 
-import java.sql.Connection;
-
-import com.kh.jsp.model.dao.MemberDao;
-import com.kh.jsp.model.vo.Member;
+import com.kh.mybatis.common.Template;
+import com.kh.mybatis.model.dao.MemberDao;
+import com.kh.mybatis.model.vo.Member;
 
 public class MemberService {
+	private MemberDao memberDao = new MemberDao();
 	
 	public Member loginMember(String userId, String userPwd) {
-		Connection conn = getConnection();
-		Member m = new MemberDao().loginMember(userId, userPwd, conn);
+		SqlSession sqlSession = Template.getSqlSession();
 		
-		close(conn);
+		Member m = new MemberDao().loginMember(sqlSession, userId, userPwd);
+		
+		sqlSession.close();
 		
 		return m;
 	}
