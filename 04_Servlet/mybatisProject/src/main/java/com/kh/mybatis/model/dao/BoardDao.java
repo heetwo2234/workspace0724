@@ -1,6 +1,7 @@
 package com.kh.mybatis.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +12,10 @@ import com.kh.mybatis.model.vo.Board;
 public class BoardDao {
 	public int selectAllBoardCount(SqlSession sqlSession) {
 		return sqlSession.selectOne("BoardMapper.selectAllBoardCount");
+	}
+	
+	public int selectAllBoardCount(SqlSession sqlSession, HashMap<String, String> searchMap) {
+		return sqlSession.selectOne("BoardMapper.searchBoardCount", searchMap);
 	}
 	
 	public ArrayList<Board> selectAllBoard(SqlSession sqlSession, PageInfo pi){

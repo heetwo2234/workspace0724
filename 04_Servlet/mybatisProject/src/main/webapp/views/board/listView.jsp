@@ -36,6 +36,20 @@
             margin-bottom: 1rem;
         }
 
+        #search-area{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        #serch-area > form{
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+        }
+
         .board-table {
             width: 100%;
             border-collapse: collapse;
@@ -84,7 +98,7 @@
 <body>
 	<jsp:include page="/views/common/menubar.jsp" />
 
-    <div class="board-container">
+    <div class="board-container"> 
         <div class="board-card">
             <h2>일반게시판</h2>
 
@@ -93,6 +107,18 @@
 	                <a class="btn btn-primary" href="${pageContext.request.contextPath}/enrollForm.bo">글쓰기</a>
 	            </div>
             </c:if>
+            
+            <div id="search-area">
+                <form action="${pageContext.request.contextPath}/search.bo" method="get">
+                    <select name="condition">
+                        <option value="writer">작성자</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="검색어를 입력하세요...">
+                    <button type="submit" class="btn btn-primary btn-sm">검색</button>
+                </form>
+            </div>
 
             <table class="board-table">
                 <thead>

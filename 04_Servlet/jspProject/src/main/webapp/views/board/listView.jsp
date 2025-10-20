@@ -94,6 +94,8 @@
 	            </div>
             </c:if>
 
+            ttt
+
             <table class="board-table">
                 <thead>
                     <tr>

@@ -1,6 +1,7 @@
 package com.kh.mybatis.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -16,6 +17,16 @@ public class BoardService {
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		int listCount = boardDao.selectAllBoardCount(sqlSession);
+		
+		sqlSession.close();
+		
+		return listCount;
+	}
+	
+	public int selectAllBoardCount(HashMap<String, String> searchMap) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int listCount = boardDao.selectAllBoardCount(sqlSession, searchMap);
 		
 		sqlSession.close();
 		
