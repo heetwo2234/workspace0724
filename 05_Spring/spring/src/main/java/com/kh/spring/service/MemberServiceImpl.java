@@ -24,4 +24,13 @@ public class MemberServiceImpl implements MemberService {
     public int getMemberCountById(String memberId) {
         return memberMapper.getMemberCountById(memberId);
     }
+
+    @Override
+    public int addMember(Member member) {
+        /*
+        MyBatis를 spring없이 단독으로 사용할 때에는 수동으로 커밋또는 롤백을 해줘야한다.
+        spring과 함께 사용할 때에는 트랜잭션처리를 스프링이 자동으로 관리한다.
+         */
+        return memberMapper.addMember(member);
+    }
 }

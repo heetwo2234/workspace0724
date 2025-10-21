@@ -1,5 +1,6 @@
 package com.kh.spring.controller;
 
+import com.kh.spring.model.mapper.MemberMapper;
 import com.kh.spring.model.vo.Member;
 import com.kh.spring.service.MemberService;
 import com.kh.spring.service.MemberServiceImpl;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +48,12 @@ public class MemberController {
        - 불변성 보장, 테스트 용이
      */
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService,  BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberService = memberService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /*
@@ -152,16 +156,19 @@ public class MemberController {
      */
 
     @PostMapping("login.me")
-    public ModelAndView login(@ModelAttribute Member member, HttpSession httpSession, ModelAndView mv) {
-        System.out.println(member);
-
-        Member loginMember = memberService.getMemberById(member.getMemberId());
+    public ModelAndView login(String memberId, String memberPwd, HttpSession httpSession, ModelAndView mv) {
+        Member loginMember = memberService.getMemberById(memberId);
         System.out.println(loginMember);
 
-        if(loginMember == null){ //ID가 잘못된 상태
+        //memberPwd -> 암호화 되지 않은 pwd(평문)
+        //loginMember.getMemberPwd() -> 암호화 된 pwd
+        //bCryptPasswordEncoder.matches(평문, 암호문) -> 해당 비밀번호가 암호화된 비밀번호와 일치하면 true/ 아니면 false반환
+
+        if(loginMember == null) { //ID가 잘못된 상태
             mv.addObject("errorMsg", "아이디를 찾을 수 없습니다.");
             mv.setViewName("common/error");
-        } else if(!loginMember.getMemberPwd().equals(member.getMemberPwd())){ //비밀번호 오류
+            //} else if(!loginMember.getMemberPwd().equals(memberPwd)){ //비밀번호 오류
+        } else if(!bCryptPasswordEncoder.matches(memberPwd, loginMember.getMemberPwd())){
             mv.addObject("errorMsg", "비밀번호를 확인해 주세요.");
             mv.setViewName("common/error");
         } else {//로그인 성공
@@ -187,11 +194,23 @@ public class MemberController {
     }
 
     @PostMapping("insert.me")
-    public String joinMember(Member member) {
+    public String joinMember(Member member, HttpSession httpSession, Model model) {
         /*
             비밀번호를 사용자 입력 그대로 저장한다 -> 평문 -> 해킹의 우려와 개인정보 침해에 우려가 있음.
             스프링시큐리티에서 지원하는 암호화방식을 사용해서 저장/검증
          */
-        return "index";
+
+        String pwd = bCryptPasswordEncoder.encode(member.getMemberPwd());
+        member.setMemberPwd(pwd);
+
+        int result = memberService.addMember(member);
+
+        if(result > 0){
+            httpSession.setAttribute("alertMsg", "회원가입에 성공하였습니다.");
+            return "redirect:/";
+        } else {
+            model.addAttribute("errorMsg", "회원가입에 실패하였습니다.");
+            return "common/error";
+        }
     }
 }
