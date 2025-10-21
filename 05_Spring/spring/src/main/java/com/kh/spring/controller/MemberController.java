@@ -43,7 +43,8 @@ public class MemberController {
               불변성 보장 불가. -> 런타임에 값이 변경될 수 있다.
 
        생성자 주입방식
-
+       가장 권장되는 방식으로, 생성 시점에 @Autowired어노테이션이 있는 생성자를 통해 의존성을 주입하는 방식
+       - 불변성 보장, 테스트 용이
      */
     private final MemberService memberService;
 
@@ -155,10 +156,10 @@ public class MemberController {
     public String login(@ModelAttribute Member member) {
         System.out.println(member);
 
-        memberService.loginMember(member);
+        Member loginMember = memberService.getMemberById(member.getMemberId());
+        System.out.println(loginMember);
 
 
-
-        return ;
+        return "index";
     }
 }
