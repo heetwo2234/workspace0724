@@ -8,5 +8,7 @@
 </head>
 <body>
 	 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
+
+	${memberId} / ${memberPwd}
 </body>
 </html>
