@@ -35,4 +35,9 @@
         WHERE MEMBER_ID = #{memberId}
         AND STATUS = 'Y'
     </select>
+    <select id="getMemberCountById" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
 </mapper>

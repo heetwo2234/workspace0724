@@ -12,4 +12,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface MemberMapper {
     Member getMemberById(@Param("memberId") String memberId);
+    int getMemberCountById(@Param("memberId") String memberId);
 }

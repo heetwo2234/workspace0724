@@ -9,10 +9,9 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.awt.*;
 
@@ -153,13 +152,46 @@ public class MemberController {
      */
 
     @PostMapping("login.me")
-    public String login(@ModelAttribute Member member) {
+    public ModelAndView login(@ModelAttribute Member member, HttpSession httpSession, ModelAndView mv) {
         System.out.println(member);
 
         Member loginMember = memberService.getMemberById(member.getMemberId());
         System.out.println(loginMember);
 
+        if(loginMember == null){ //ID가 잘못된 상태
+            mv.addObject("errorMsg", "아이디를 찾을 수 없습니다.");
+            mv.setViewName("common/error");
+        } else if(!loginMember.getMemberPwd().equals(member.getMemberPwd())){ //비밀번호 오류
+            mv.addObject("errorMsg", "비밀번호를 확인해 주세요.");
+            mv.setViewName("common/error");
+        } else {//로그인 성공
+            httpSession.setAttribute("loginMember", loginMember);
+            mv.setViewName("redirect:/");
+        }
 
+        return mv;
+    }
+
+    @GetMapping("enrollForm.me")
+    public String enrollForm() {
+        return "member/enrollForm";
+    }
+
+    @GetMapping("idDulpicateCheck.me")
+    @ResponseBody //리턴을 뷰(jsp)로 보내지말고, HTTP응답 바디에 그대로 담아서 보내라.
+    public String idDulpicateCheck(@RequestParam String checkId) {
+
+        int count = memberService.getMemberCountById(checkId);
+
+        return count > 0 ? "NNNNN" : "NNNNY";
+    }
+
+    @PostMapping("insert.me")
+    public String joinMember(Member member) {
+        /*
+            비밀번호를 사용자 입력 그대로 저장한다 -> 평문 -> 해킹의 우려와 개인정보 침해에 우려가 있음.
+            스프링시큐리티에서 지원하는 암호화방식을 사용해서 저장/검증
+         */
         return "index";
     }
 }

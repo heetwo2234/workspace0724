@@ -34,7 +34,7 @@
 
 </head>
 <body>
-    <jsp:include page="/views/common/menubar.jsp" />
+    <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="container">
         <div class="form-container">
@@ -42,7 +42,7 @@
             <form id="enroll-form" action="${pageContext.request.contextPath}/insert.me" method="post">
                 <div class="row form-row">
                     <div class="col-md-8">
-                        <input type="text" class="form-control" name="userId" required placeholder="아이디 입력...">
+                        <input type="text" class="form-control" name="memberId" required placeholder="아이디 입력...">
                     </div>
                     <div class="col-md-4">
                         <button type="button" class="btn btn-outline-primary w-100" onclick="idDulpicateCheck()">중복확인</button>
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="form-row">
-                    <input type="password" class="form-control" name="userPwd" required placeholder="비밀번호 입력...">
+                    <input type="password" class="form-control" name="memberPwd" required placeholder="비밀번호 입력...">
                 </div>
 
                 <div class="form-row">
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="form-row">
-                    <input type="text" class="form-control" name="userName" required placeholder="이름 입력...">
+                    <input type="text" class="form-control" name="memberName" required placeholder="이름 입력...">
                 </div>
 
                 <div class="form-row">
@@ -173,7 +173,7 @@
         //                                              no -> 다시 입력
 
         function idDulpicateCheck(){
-            const idInput = document.querySelector("#enroll-form input[name=userId]");
+            const idInput = document.querySelector("#enroll-form input[name=memberId]");
 
             if(idInput.value.length < 5) { //아이디 형식에대한 예외처리
                 return;
