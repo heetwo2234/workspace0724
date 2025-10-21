@@ -42,5 +42,15 @@ public class BoardService {
 		
 		return list;
 	}
+	
+	public ArrayList<Board> selectAllBoard(PageInfo pi, HashMap<String, String> searchMap) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		ArrayList<Board> list = boardDao.selectAllBoard(sqlSession, pi, searchMap);
+		
+		sqlSession.close();
+		
+		return list;
+	}
 
 }
