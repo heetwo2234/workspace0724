@@ -1,0 +1,18 @@
+package com.kh.spring.model.mapper;
+
+import com.kh.spring.model.vo.Board;
+import com.kh.spring.model.vo.Category;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@Mapper
+public interface BoardMapper {
+    List<Category> selectCategories();
+
+    List<Board> selectBoardList(RowBounds rowBounds);
+    int selectBoardListCount();
+    int insertBoard(Board board);
+}
