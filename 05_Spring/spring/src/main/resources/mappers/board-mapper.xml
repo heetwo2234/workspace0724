@@ -29,6 +29,16 @@
         <result column="FILE_PATH" property="filePath"/>
     </resultMap>
 
+    <resultMap id="replyResultMap" type="Reply">
+        <result column="REPLY_NO" property="replyNo"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
+        <result column="REF_BNO" property="refBoardNo"/>
+        <result column="REPLY_WRITER" property="replyWriter"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="STATUS" property="status"/>
+        <result column="MEMBER_ID" property="memberId"/>
+    </resultMap>
+
     <select id="selectCategories" resultMap="categoryResultMap">
         SELECT CATEGORY_NO,
                 CATEGORY_NAME
@@ -145,5 +155,44 @@
         UPDATE ATTACHMENT
         SET STATUS = 'N'
         WHERE FILE_NO = #{fileNo}
+    </update>
+
+    <!-- 댓글추가 -->
+    <insert id="insertReply" parameterType="Reply">
+        INSERT INTO REPLY
+        (
+            REPLY_NO,
+            REPLY_CONTENT,
+            REF_BNO,
+            REPLY_WRITER
+        ) VALUES (
+            SEQ_RNO.NEXTVAL,
+            #{replyContent},
+            #{refBoardNo},
+            #{replyWriter}
+        )
+    </insert>
+
+    <!-- 댓글 조회 -->
+    <select id="selectReplyListByBoardNo" parameterType="_int" resultMap="replyResultMap">
+        SELECT REPLY_NO,
+                R.REPLY_CONTENT,
+                R.REF_BNO,
+                R.REPLY_WRITER,
+                TO_CHAR(R.CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATE_DATE,
+                M.MEMBER_ID,
+                R.STATUS
+          FROM REPLY R
+          JOIN MEMBER M ON(MEMBER_NO = REPLY_WRITER)
+         WHERE REF_BNO = #{boardNo}
+           AND R.STATUS = 'Y'
+        ORDER BY R.REPLY_NO DESC
+    </select>
+
+    <!-- 댓글 삭제 -->
+    <update id="deleteReply" parameterType="_int">
+        UPDATE REPLY
+        SET STATUS = 'N'
+        WHERE REPLY_NO = #{replyNo}
     </update>
 </mapper>

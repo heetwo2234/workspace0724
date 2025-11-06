@@ -3,6 +3,7 @@ package com.kh.spring.controller;
 import com.kh.spring.model.vo.Board;
 import com.kh.spring.model.vo.Category;
 import com.kh.spring.model.vo.Member;
+import com.kh.spring.model.vo.Reply;
 import com.kh.spring.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -112,5 +114,45 @@ public class BoardController {
             model.addAttribute("errorMsg", "게시글 수정 실패");
             return "common/error";
         }
+    }
+
+    //댓글 작성(AJAX)
+    @PostMapping("/rinsert.bo")
+    @ResponseBody
+    public String insertReply(@RequestParam("boardNo") int boardNo,
+                              @RequestParam("content") String content,
+                              HttpSession session) {
+        Member m = (Member)session.getAttribute("loginMember");
+
+        Reply reply = new Reply();
+        reply.setRefBoardNo(boardNo);
+        reply.setReplyContent(content);
+        reply.setReplyWriter(m.getMemberNo());
+
+        int result = boardService.insertReply(reply);
+
+        return result > 0 ? "1" : "0";
+    }
+
+    /*
+        spring-boot-starter-web
+        -> jackson라이브러리를 기본적으로 탑제하고 있기 때문에 응답시 객체를 응답한다면 json문자로 변환해준다.
+
+        @ResponseBody -> 응답을 응답바디로 직접 보내도록 지정
+        jackson -> json 문자열로 변환 -> 응답바디에 전달
+     */
+    //댓글목록
+    @GetMapping("/rlist.bo")
+    @ResponseBody
+    public List<Reply> selectReply(@RequestParam("boardNo") int boardNo) {
+       return boardService.getReplyListByBoardNo(boardNo);
+    }
+
+    @GetMapping("rdelete.bo")
+    @ResponseBody
+    public String deleteReply(@RequestParam("replyNo") int replyNo) {
+        int result = boardService.removeReply(replyNo);
+
+        return result > 0 ? "1" : "0";
     }
 }

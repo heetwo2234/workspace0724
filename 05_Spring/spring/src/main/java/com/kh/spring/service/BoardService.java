@@ -2,6 +2,7 @@ package com.kh.spring.service;
 
 import com.kh.spring.model.vo.Board;
 import com.kh.spring.model.vo.Category;
+import com.kh.spring.model.vo.Reply;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -18,4 +19,9 @@ public interface BoardService {
     public Map<String,Object> getBoardByIdWithCount(int boardNo);
     public Map<String,Object> getBoardById(int boardNo);
     public int updateBoard(Board board, MultipartFile file, Integer originFileNo);
+
+    //댓글관련
+    public int insertReply(Reply reply);
+    public List<Reply> getReplyListByBoardNo(int boardNo);
+    public int removeReply(int replyNo);
 }

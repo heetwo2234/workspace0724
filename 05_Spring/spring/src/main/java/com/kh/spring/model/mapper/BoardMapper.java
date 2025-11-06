@@ -3,6 +3,7 @@ package com.kh.spring.model.mapper;
 import com.kh.spring.model.vo.Attachment;
 import com.kh.spring.model.vo.Board;
 import com.kh.spring.model.vo.Category;
+import com.kh.spring.model.vo.Reply;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -26,4 +27,9 @@ public interface BoardMapper {
     //첨부파일
     int insertAttachment(Attachment attachment);
     int deleteAttachment(int fileNo);
+
+    //댓글
+    int insertReply(Reply reply);
+    List<Reply> selectReplyListByBoardNo(int boardNo);
+    int deleteReply(int replyNo);
 }

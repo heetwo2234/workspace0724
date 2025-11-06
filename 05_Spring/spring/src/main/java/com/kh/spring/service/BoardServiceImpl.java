@@ -1,10 +1,7 @@
 package com.kh.spring.service;
 
 import com.kh.spring.model.mapper.BoardMapper;
-import com.kh.spring.model.vo.Attachment;
-import com.kh.spring.model.vo.Board;
-import com.kh.spring.model.vo.Category;
-import com.kh.spring.model.vo.PageInfo;
+import com.kh.spring.model.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +121,21 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return result;
+    }
+
+    @Override
+    public int insertReply(Reply reply) {
+        return boardMapper.insertReply(reply);
+    }
+
+    @Override
+    public List<Reply> getReplyListByBoardNo(int boardNo) {
+        return boardMapper.selectReplyListByBoardNo(boardNo);
+    }
+
+    @Override
+    public int removeReply(int replyNo) {
+        return boardMapper.deleteReply(replyNo);
     }
 
     private String saveFile(MultipartFile file, String path) {
