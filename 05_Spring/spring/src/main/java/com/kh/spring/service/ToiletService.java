@@ -18,7 +18,7 @@ public class ToiletService {
 
     private static final String API_URL = "http://openapi.seoul.go.kr:8088";
 
-    public void getToiletList(int start,int end){
+    public ToiletListResponse getToiletList(int start,int end){
 
         try {
             //http://openapi.seoul.go.kr:8088/인증키/응답형식/mgisToiletPoi/시작인덱스/끝인덱스/
@@ -29,14 +29,16 @@ public class ToiletService {
             RestTemplate restTemplate = new RestTemplate();
             String jsonResponse = restTemplate.getForObject(url, String.class);
 
+            ToiletListResponse result = parseJsonResponse(jsonResponse);
 
+            return result;
         } catch (Exception e) {
             log.error("화장실 목록 조회 실패 ", e);
-            return;
+            return null;
         }
     }
 
-    private void parseJsonResponse(String jsonResponse) throws Exception {
+    private ToiletListResponse parseJsonResponse(String jsonResponse) throws Exception {
         //jacson라이브러리의 클래스인 ObjectMapper, JSON <-> 문자열
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,5 +48,7 @@ public class ToiletService {
         objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 
         ToiletListResponse response = objectMapper.readValue(jsonResponse, ToiletListResponse.class);
+
+        return response;
     }
 }

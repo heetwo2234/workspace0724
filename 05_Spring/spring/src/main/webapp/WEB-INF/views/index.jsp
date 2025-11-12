@@ -346,6 +346,7 @@
 
 <script>
 	// 상세정보 표시
+	console.log(`${toiletList}`)
 	function showDetail(objectId) {
 		const toilets = [
 			<c:forEach var="toilet" items="${toiletList}" varStatus="status">
