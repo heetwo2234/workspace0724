@@ -2,38 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 
-const Header = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
-  return (
-    <HeaderContainer>
-      <Logo to="/">🎬 영화 감상일지</Logo>
-      <Nav>
-        <NavLink to="/">홈</NavLink>
-        <NavLink to="/movies">감상 목록</NavLink>
-        {user ? (
-          <>
-            <NavLink to="/movies/new">글쓰기</NavLink>
-            <NavLink to="/mypage">마이페이지</NavLink>
-            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-          </>
-        ) : (
-          <>
-            <NavLink to="/login">로그인</NavLink>
-            <NavLink to="/signup">회원가입</NavLink>
-          </>
-        )}
-      </Nav>
-    </HeaderContainer>
-  );
-};
-
 const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
@@ -88,5 +56,37 @@ const LogoutButton = styled.button`
     background: rgba(255, 255, 255, 0.2);
   }
 `;
+
+const Header = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  return (
+    <HeaderContainer>
+      <Logo to="/">영화 감상일지</Logo>
+      <Nav>
+        <NavLink to="/">홈</NavLink>
+        <NavLink to="/movies">감상 목록</NavLink>
+        {user ? (
+          <>
+            <NavLink to="/movies/new">글쓰기</NavLink>
+            <NavLink to="/mypage">마이페이지</NavLink>
+            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login">로그인</NavLink>
+            <NavLink to="/signup">회원가입</NavLink>
+          </>
+        )}
+      </Nav>
+    </HeaderContainer>
+  );
+};
 
 export default Header;

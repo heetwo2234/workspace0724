@@ -3,62 +3,6 @@ import styled from 'styled-components';
 import { useMovies } from '../context/MovieContext';
 import MovieCard from '../components/MovieCard';
 
-const MovieList = () => {
-  const { movies, searchMovies, sortMovies } = useMovies();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('latest');
-
-  const filteredMovies = searchQuery ? searchMovies(searchQuery) : movies;
-  const displayedMovies = sortMovies(filteredMovies, sortBy);
-
-  return (
-    <Container>
-      <Header>
-        <Title>📽️ 영화 감상 목록</Title>
-        <Subtitle>모든 사람들의 감상 기록을 둘러보세요</Subtitle>
-      </Header>
-
-      <Controls>
-        <SearchBar>
-          <SearchInput
-            type="text"
-            placeholder="영화 제목, 장르, 내용으로 검색..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <SearchIcon>🔍</SearchIcon>
-        </SearchBar>
-
-        <SortSelect value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="latest">최신순</option>
-          <option value="oldest">오래된순</option>
-          <option value="rating-high">평점 높은순</option>
-          <option value="rating-low">평점 낮은순</option>
-          <option value="title">제목순</option>
-        </SortSelect>
-      </Controls>
-
-      <ResultInfo>
-        총 <strong>{displayedMovies.length}</strong>개의 감상 기록
-      </ResultInfo>
-
-      {displayedMovies.length > 0 ? (
-        <MovieGrid>
-          {displayedMovies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </MovieGrid>
-      ) : (
-        <EmptyState>
-          <EmptyIcon>🎬</EmptyIcon>
-          <EmptyText>검색 결과가 없습니다.</EmptyText>
-          <EmptySubtext>다른 키워드로 검색해보세요.</EmptySubtext>
-        </EmptyState>
-      )}
-    </Container>
-  );
-};
-
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -171,5 +115,60 @@ const EmptyText = styled.p`
 const EmptySubtext = styled.p`
   color: #718096;
 `;
+
+
+const MovieList = () => {
+  const { movies, searchMovies, sortMovies } = useMovies();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('latest');
+
+  const filteredMovies = searchQuery ? searchMovies(searchQuery) : movies;
+  const displayedMovies = sortMovies(filteredMovies, sortBy);
+
+  return (
+    <Container>
+      <Header>
+        <Title>영화 감상 목록</Title>
+        <Subtitle>모든 사람들의 감상 기록을 둘러보세요</Subtitle>
+      </Header>
+
+      <Controls>
+        <SearchBar>
+          <SearchInput
+            type="text"
+            placeholder="영화 제목, 장르, 내용으로 검색..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </SearchBar>
+
+        <SortSelect value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="latest">최신순</option>
+          <option value="oldest">오래된순</option>
+          <option value="rating-high">평점 높은순</option>
+          <option value="rating-low">평점 낮은순</option>
+          <option value="title">제목순</option>
+        </SortSelect>
+      </Controls>
+
+      <ResultInfo>
+        총 <strong>{displayedMovies.length}</strong>개의 감상 기록
+      </ResultInfo>
+
+      {displayedMovies.length > 0 ? (
+        <MovieGrid>
+          {displayedMovies.map(movie => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </MovieGrid>
+      ) : (
+        <EmptyState>
+          <EmptyText>검색 결과가 없습니다.</EmptyText>
+        </EmptyState>
+      )}
+    </Container>
+  );
+};
+
 
 export default MovieList;

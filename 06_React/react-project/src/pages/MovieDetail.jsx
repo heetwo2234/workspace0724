@@ -4,154 +4,6 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useMovies } from '../context/MovieContext';
 
-const MovieDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { getMovie, deleteMovie, addComment, deleteComment } = useMovies();
-  const [movie, setMovie] = useState(null);
-  const [commentText, setCommentText] = useState('');
-
-  useEffect(() => {
-    const foundMovie = getMovie(id);
-    if (foundMovie) {
-      setMovie(foundMovie);
-    } else {
-      navigate('/404');
-    }
-  }, [id, getMovie, navigate]);
-
-  if (!movie) {
-    return <Loading>로딩 중...</Loading>;
-  }
-
-  const handleDelete = () => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      const result = deleteMovie(id);
-      if (result.success) {
-        navigate('/movies');
-      } else {
-        alert(result.message);
-      }
-    }
-  };
-
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-
-    const result = addComment(id, commentText);
-    if (result.success) {
-      setCommentText('');
-      setMovie(getMovie(id));
-    } else {
-      alert(result.message);
-    }
-  };
-
-  const handleDeleteComment = (commentId) => {
-    if (window.confirm('댓글을 삭제하시겠습니까?')) {
-      const result = deleteComment(id, commentId);
-      if (result.success) {
-        setMovie(getMovie(id));
-      } else {
-        alert(result.message);
-      }
-    }
-  };
-
-  const renderStars = (rating) => {
-    return '⭐'.repeat(rating) + '☆'.repeat(5 - rating);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString('ko-KR');
-  };
-
-  const isAuthor = user && user.id === movie.userId;
-
-  return (
-    <Container>
-      <ContentWrapper>
-        <Header>
-          <HeaderTop>
-            <BackButton onClick={() => navigate(-1)}>← 목록으로</BackButton>
-            {isAuthor && (
-              <ButtonGroup>
-                <EditButton onClick={() => navigate(`/movies/${id}/edit`)}>
-                  수정
-                </EditButton>
-                <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
-              </ButtonGroup>
-            )}
-          </HeaderTop>
-
-          <Title>{movie.title}</Title>
-          <Genre>{movie.genre || '미분류'}</Genre>
-          <Rating>{renderStars(movie.rating || 0)}</Rating>
-          
-          <MetaInfo>
-            <AuthorInfo>
-              <span>작성자: {movie.userName}</span>
-            </AuthorInfo>
-            <DateInfo>
-              <span>작성일: {formatDate(movie.createdAt)}</span>
-              {movie.updatedAt !== movie.createdAt && (
-                <span> (수정됨: {formatDate(movie.updatedAt)})</span>
-              )}
-            </DateInfo>
-          </MetaInfo>
-        </Header>
-
-        <Content>{movie.content}</Content>
-
-        <CommentSection>
-          <CommentHeader>
-            💬 댓글 <CommentCount>({movie.comments?.length || 0})</CommentCount>
-          </CommentHeader>
-
-          {user ? (
-            <CommentForm onSubmit={handleAddComment}>
-              <CommentInput
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                placeholder="댓글을 입력하세요..."
-                rows="3"
-              />
-              <CommentButton type="submit">댓글 작성</CommentButton>
-            </CommentForm>
-          ) : (
-            <LoginPrompt>
-              댓글을 작성하려면 <LoginLink onClick={() => navigate('/login')}>로그인</LoginLink>이 필요합니다.
-            </LoginPrompt>
-          )}
-
-          <CommentList>
-            {movie.comments && movie.comments.length > 0 ? (
-              movie.comments.map(comment => (
-                <CommentItem key={comment.id}>
-                  <CommentTop>
-                    <CommentAuthor>{comment.userName}</CommentAuthor>
-                    <CommentDate>{formatDate(comment.createdAt)}</CommentDate>
-                  </CommentTop>
-                  <CommentText>{comment.text}</CommentText>
-                  {user && user.id === comment.userId && (
-                    <DeleteCommentButton onClick={() => handleDeleteComment(comment.id)}>
-                      삭제
-                    </DeleteCommentButton>
-                  )}
-                </CommentItem>
-              ))
-            ) : (
-              <NoComments>아직 댓글이 없습니다. 첫 댓글을 남겨보세요!</NoComments>
-            )}
-          </CommentList>
-        </CommentSection>
-      </ContentWrapper>
-    </Container>
-  );
-};
-
 const Container = styled.div`
   min-height: calc(100vh - 80px);
   background: #f7fafc;
@@ -399,5 +251,155 @@ const NoComments = styled.div`
   padding: 2rem;
   color: #a0aec0;
 `;
+
+const MovieDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { getMovie, deleteMovie, addComment, deleteComment } = useMovies();
+  const [movie, setMovie] = useState(null);
+  const [commentText, setCommentText] = useState('');
+
+  useEffect(() => {
+    const foundMovie = getMovie(id);
+    if (foundMovie) {
+      setMovie(foundMovie);
+    } else {
+      navigate('/404');
+    }
+  }, [id, getMovie, navigate]);
+
+  if (!movie) {
+    return <Loading>로딩 중...</Loading>;
+  }
+
+  const handleDelete = () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      const result = deleteMovie(id);
+      if (result.success) {
+        navigate('/movies');
+      } else {
+        alert(result.message);
+      }
+    }
+  };
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+
+    const result = addComment(id, commentText);
+    if (result.success) {
+      setCommentText('');
+      setMovie(getMovie(id));
+    } else {
+      alert(result.message);
+    }
+  };
+
+  const handleDeleteComment = (commentId) => {
+    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+      const result = deleteComment(id, commentId);
+      if (result.success) {
+        setMovie(getMovie(id));
+      } else {
+        alert(result.message);
+      }
+    }
+  };
+
+  const renderStars = (rating) => {
+    return '⭐'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleString('ko-KR');
+  };
+
+  const isAuthor = user && user.id === movie.userId;
+
+  return (
+    <Container>
+      <ContentWrapper>
+        <Header>
+          <HeaderTop>
+            <BackButton onClick={() => navigate(-1)}>← 목록으로</BackButton>
+            {isAuthor && (
+              <ButtonGroup>
+                <EditButton onClick={() => navigate(`/movies/${id}/edit`)}>
+                  수정
+                </EditButton>
+                <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+              </ButtonGroup>
+            )}
+          </HeaderTop>
+
+          <Title>{movie.title}</Title>
+          <Genre>{movie.genre || '미분류'}</Genre>
+          <Rating>{renderStars(movie.rating || 0)}</Rating>
+          
+          <MetaInfo>
+            <AuthorInfo>
+              <span>작성자: {movie.userName}</span>
+            </AuthorInfo>
+            <DateInfo>
+              <span>작성일: {formatDate(movie.createdAt)}</span>
+              {movie.updatedAt !== movie.createdAt && (
+                <span> (수정됨: {formatDate(movie.updatedAt)})</span>
+              )}
+            </DateInfo>
+          </MetaInfo>
+        </Header>
+
+        <Content>{movie.content}</Content>
+
+        <CommentSection>
+          <CommentHeader>
+            댓글 <CommentCount>({movie.comments?.length || 0})</CommentCount>
+          </CommentHeader>
+
+          {user ? (
+            <CommentForm onSubmit={handleAddComment}>
+              <CommentInput
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="댓글을 입력하세요..."
+                rows="3"
+              />
+              <CommentButton type="submit">댓글 작성</CommentButton>
+            </CommentForm>
+          ) : (
+            <LoginPrompt>
+              댓글을 작성하려면 <LoginLink onClick={() => navigate('/login')}>로그인</LoginLink>이 필요합니다.
+            </LoginPrompt>
+          )}
+
+          <CommentList>
+            {movie.comments && movie.comments.length > 0 ? (
+              movie.comments.map(comment => (
+                <CommentItem key={comment.id}>
+                  <CommentTop>
+                    <CommentAuthor>{comment.userName}</CommentAuthor>
+                    <CommentDate>{formatDate(comment.createdAt)}</CommentDate>
+                  </CommentTop>
+                  <CommentText>{comment.text}</CommentText>
+                  {user && user.id === comment.userId && (
+                    <DeleteCommentButton onClick={() => handleDeleteComment(comment.id)}>
+                      삭제
+                    </DeleteCommentButton>
+                  )}
+                </CommentItem>
+              ))
+            ) : (
+              <NoComments>아직 댓글이 없습니다.</NoComments>
+            )}
+          </CommentList>
+        </CommentSection>
+      </ContentWrapper>
+    </Container>
+  );
+};
+
+
 
 export default MovieDetail;

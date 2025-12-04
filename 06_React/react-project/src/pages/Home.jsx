@@ -4,77 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import { useMovies } from '../context/MovieContext';
 import MovieCard from '../components/MovieCard';
 
-const Home = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { movies } = useMovies();
-
-  const recentMovies = movies.slice(0, 6);
-
-  return (
-    <Container>
-      <Hero>
-        <HeroContent>
-          <HeroTitle>🎬 영화 감상일지</HeroTitle>
-          <HeroSubtitle>
-            당신의 영화 경험을 기록하고 공유하세요
-          </HeroSubtitle>
-          {user ? (
-            <HeroButton onClick={() => navigate('/movies/new')}>
-              감상 기록하기
-            </HeroButton>
-          ) : (
-            <HeroButton onClick={() => navigate('/login')}>
-              시작하기
-            </HeroButton>
-          )}
-        </HeroContent>
-      </Hero>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>✨ 최근 감상 기록</SectionTitle>
-          <ViewAllButton onClick={() => navigate('/movies')}>
-            전체보기 →
-          </ViewAllButton>
-        </SectionHeader>
-        
-        {recentMovies.length > 0 ? (
-          <MovieGrid>
-            {recentMovies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </MovieGrid>
-        ) : (
-          <EmptyState>
-            <EmptyIcon>🎬</EmptyIcon>
-            <EmptyText>아직 등록된 감상 기록이 없습니다.</EmptyText>
-            <EmptySubtext>첫 번째 감상 기록을 작성해보세요!</EmptySubtext>
-          </EmptyState>
-        )}
-      </Section>
-
-      <Features>
-        <FeatureCard>
-          <FeatureIcon>✍️</FeatureIcon>
-          <FeatureTitle>감상 기록</FeatureTitle>
-          <FeatureDesc>영화를 보고 느낀 점을 자유롭게 기록하세요</FeatureDesc>
-        </FeatureCard>
-        <FeatureCard>
-          <FeatureIcon>⭐</FeatureIcon>
-          <FeatureTitle>평점 매기기</FeatureTitle>
-          <FeatureDesc>5점 만점으로 영화를 평가해보세요</FeatureDesc>
-        </FeatureCard>
-        <FeatureCard>
-          <FeatureIcon>💬</FeatureIcon>
-          <FeatureTitle>댓글 소통</FeatureTitle>
-          <FeatureDesc>다른 사람들과 의견을 나눠보세요</FeatureDesc>
-        </FeatureCard>
-      </Features>
-    </Container>
-  );
-};
-
 const Container = styled.div`
   min-height: calc(100vh - 80px);
 `;
@@ -179,15 +108,6 @@ const EmptySubtext = styled.p`
   color: #718096;
 `;
 
-const Features = styled.div`
-  max-width: 1200px;
-  margin: 4rem auto;
-  padding: 0 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-`;
-
 const FeatureCard = styled.div`
   text-align: center;
   padding: 2rem;
@@ -211,5 +131,59 @@ const FeatureDesc = styled.p`
   color: #718096;
   line-height: 1.6;
 `;
+
+const Home = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { movies } = useMovies();
+
+  const recentMovies = movies.slice(0, 6);
+
+  return (
+    <Container>
+      <Hero>
+        <HeroContent>
+          <HeroTitle>영화 감상일지</HeroTitle>
+          <HeroSubtitle>
+            당신의 영화 경험을 기록하고 공유하세요
+          </HeroSubtitle>
+          {user ? (
+            <HeroButton onClick={() => navigate('/movies/new')}>
+              감상 기록하기
+            </HeroButton>
+          ) : (
+            <HeroButton onClick={() => navigate('/login')}>
+              시작하기
+            </HeroButton>
+          )}
+        </HeroContent>
+      </Hero>
+
+      <Section>
+        <SectionHeader>
+          <SectionTitle>최근 감상 기록</SectionTitle>
+          <ViewAllButton onClick={() => navigate('/movies')}>
+            전체보기 →
+          </ViewAllButton>
+        </SectionHeader>
+        
+        {recentMovies.length > 0 ? (
+          <MovieGrid>
+            {recentMovies.map(movie => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </MovieGrid>
+        ) : (
+          <EmptyState>
+            <EmptyText>아직 등록된 감상 기록이 없습니다.</EmptyText>
+            <EmptySubtext>첫 번째 감상 기록을 작성해보세요!</EmptySubtext>
+          </EmptyState>
+        )}
+      </Section>
+    </Container>
+  );
+};
+
+
 
 export default Home;

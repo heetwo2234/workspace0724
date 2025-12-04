@@ -5,136 +5,6 @@ import { useAuth } from '../context/AuthContext';
 import { useMovies } from '../context/MovieContext';
 import MovieCard from '../components/MovieCard';
 
-const MyPage = () => {
-  const { user, updateProfile, logout } = useAuth();
-  const { getUserMovies } = useMovies();
-  const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState('');
-  const [myMovies, setMyMovies] = useState([]);
-
-  useEffect(() => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      navigate('/login');
-      return;
-    }
-    setName(user.name);
-    setMyMovies(getUserMovies(user.id));
-  }, [user, navigate, getUserMovies]);
-
-  const handleUpdateProfile = (e) => {
-    e.preventDefault();
-    if (!name.trim()) {
-      alert('이름을 입력해주세요.');
-      return;
-    }
-    const result = updateProfile(name);
-    if (result.success) {
-      setIsEditing(false);
-      alert('프로필이 수정되었습니다.');
-    }
-  };
-
-  const handleLogout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      logout();
-      navigate('/');
-    }
-  };
-
-  if (!user) return null;
-
-  const totalRating = myMovies.reduce((sum, movie) => sum + (movie.rating || 0), 0);
-  const avgRating = myMovies.length > 0 ? (totalRating / myMovies.length).toFixed(1) : 0;
-
-  return (
-    <Container>
-      <ProfileSection>
-        <ProfileCard>
-          <ProfileHeader>
-            <Avatar>👤</Avatar>
-            <ProfileInfo>
-              {isEditing ? (
-                <EditForm onSubmit={handleUpdateProfile}>
-                  <NameInput
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="이름"
-                  />
-                  <ButtonGroup>
-                    <SaveButton type="submit">저장</SaveButton>
-                    <CancelButton type="button" onClick={() => {
-                      setName(user.name);
-                      setIsEditing(false);
-                    }}>
-                      취소
-                    </CancelButton>
-                  </ButtonGroup>
-                </EditForm>
-              ) : (
-                <>
-                  <Name>{user.name}</Name>
-                  <Email>{user.email}</Email>
-                  <EditButton onClick={() => setIsEditing(true)}>
-                    프로필 수정
-                  </EditButton>
-                </>
-              )}
-            </ProfileInfo>
-          </ProfileHeader>
-
-          <Stats>
-            <StatItem>
-              <StatValue>{myMovies.length}</StatValue>
-              <StatLabel>작성한 감상</StatLabel>
-            </StatItem>
-            <StatDivider />
-            <StatItem>
-              <StatValue>{avgRating}</StatValue>
-              <StatLabel>평균 평점</StatLabel>
-            </StatItem>
-            <StatDivider />
-            <StatItem>
-              <StatValue>
-                {myMovies.reduce((sum, movie) => sum + (movie.comments?.length || 0), 0)}
-              </StatValue>
-              <StatLabel>받은 댓글</StatLabel>
-            </StatItem>
-          </Stats>
-
-          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-        </ProfileCard>
-      </ProfileSection>
-
-      <ContentSection>
-        <SectionHeader>
-          <SectionTitle>📝 내가 작성한 감상 기록</SectionTitle>
-          <WriteButton onClick={() => navigate('/movies/new')}>
-            + 새 감상 작성
-          </WriteButton>
-        </SectionHeader>
-
-        {myMovies.length > 0 ? (
-          <MovieGrid>
-            {myMovies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </MovieGrid>
-        ) : (
-          <EmptyState>
-            <EmptyIcon>🎬</EmptyIcon>
-            <EmptyText>아직 작성한 감상이 없습니다.</EmptyText>
-            <EmptyButton onClick={() => navigate('/movies/new')}>
-              첫 감상 기록하기
-            </EmptyButton>
-          </EmptyState>
-        )}
-      </ContentSection>
-    </Container>
-  );
-};
-
 const Container = styled.div`
   min-height: calc(100vh - 80px);
   background: #f7fafc;
@@ -163,17 +33,6 @@ const ProfileHeader = styled.div`
     flex-direction: column;
     text-align: center;
   }
-`;
-
-const Avatar = styled.div`
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
 `;
 
 const ProfileInfo = styled.div`
@@ -373,5 +232,135 @@ const EmptyButton = styled.button`
     opacity: 0.9;
   }
 `;
+
+const MyPage = () => {
+  const { user, updateProfile, logout } = useAuth();
+  const { getUserMovies } = useMovies();
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState('');
+  const [myMovies, setMyMovies] = useState([]);
+
+  useEffect(() => {
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+      return;
+    }
+    setName(user.name);
+    setMyMovies(getUserMovies(user.id));
+  }, [user, navigate, getUserMovies]);
+
+  const handleUpdateProfile = (e) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      alert('이름을 입력해주세요.');
+      return;
+    }
+    const result = updateProfile(name);
+    if (result.success) {
+      setIsEditing(false);
+      alert('프로필이 수정되었습니다.');
+    }
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      logout();
+      navigate('/');
+    }
+  };
+
+  if (!user) return null;
+
+  const totalRating = myMovies.reduce((sum, movie) => sum + (movie.rating || 0), 0);
+  const avgRating = myMovies.length > 0 ? (totalRating / myMovies.length).toFixed(1) : 0;
+
+  return (
+    <Container>
+      <ProfileSection>
+        <ProfileCard>
+          <ProfileHeader>
+            <ProfileInfo>
+              {isEditing ? (
+                <EditForm onSubmit={handleUpdateProfile}>
+                  <NameInput
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="이름"
+                  />
+                  <ButtonGroup>
+                    <SaveButton type="submit">저장</SaveButton>
+                    <CancelButton type="button" onClick={() => {
+                      setName(user.name);
+                      setIsEditing(false);
+                    }}>
+                      취소
+                    </CancelButton>
+                  </ButtonGroup>
+                </EditForm>
+              ) : (
+                <>
+                  <Name>{user.name}</Name>
+                  <Email>{user.email}</Email>
+                  <EditButton onClick={() => setIsEditing(true)}>
+                    프로필 수정
+                  </EditButton>
+                </>
+              )}
+            </ProfileInfo>
+          </ProfileHeader>
+
+          <Stats>
+            <StatItem>
+              <StatValue>{myMovies.length}</StatValue>
+              <StatLabel>작성한 감상</StatLabel>
+            </StatItem>
+            <StatDivider />
+            <StatItem>
+              <StatValue>{avgRating}</StatValue>
+              <StatLabel>평균 평점</StatLabel>
+            </StatItem>
+            <StatDivider/>
+            <StatItem>
+              <StatValue>
+                {myMovies.reduce((sum, movie) => sum + (movie.comments?.length || 0), 0)}
+              </StatValue>
+              <StatLabel>받은 댓글</StatLabel>
+            </StatItem>
+          </Stats>
+
+          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+        </ProfileCard>
+      </ProfileSection>
+
+      <ContentSection>
+        <SectionHeader>
+          <SectionTitle>내가 작성한 감상 기록</SectionTitle>
+          <WriteButton onClick={() => navigate('/movies/new')}>
+            + 새 감상 작성
+          </WriteButton>
+        </SectionHeader>
+
+        {myMovies.length > 0 ? (
+          <MovieGrid>
+            {myMovies.map(movie => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </MovieGrid>
+        ) : (
+          <EmptyState>
+            <EmptyText>아직 작성한 감상이 없습니다.</EmptyText>
+            <EmptyButton onClick={() => navigate('/movies/new')}>
+              첫 감상 기록하기
+            </EmptyButton>
+          </EmptyState>
+        )}
+      </ContentSection>
+    </Container>
+  );
+};
+
+
 
 export default MyPage;

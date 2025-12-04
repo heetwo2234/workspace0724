@@ -105,7 +105,7 @@ const MovieForm = () => {
     <Container>
       <FormCard>
         <Header>
-          <Title>{isEditMode ? '✏️ 감상 수정' : '✍️ 새 감상 기록'}</Title>
+          <Title>{isEditMode ? '수정' : '새 감상 기록'}</Title>
           <Subtitle>
             {isEditMode ? '영화 감상을 수정해보세요' : '본 영화에 대한 감상을 기록해보세요'}
           </Subtitle>
@@ -158,7 +158,7 @@ const MovieForm = () => {
                     onClick={() => setFormData(prev => ({ ...prev, rating: star }))}
                     $active={star <= formData.rating}
                   >
-                    {star <= formData.rating ? '⭐' : '☆'}
+                    {star <= formData.rating ? '★' : '☆'}
                   </StarButton>
                 ))}
                 <RatingText>{formData.rating}점</RatingText>
