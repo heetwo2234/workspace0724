@@ -3,70 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (!email || !password) {
-      setError('이메일과 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    const result = login(email, password);
-    if (result.success) {
-      navigate('/');
-    } else {
-      setError(result.message);
-    }
-  };
-
-  return (
-    <Container>
-      <FormCard>
-        <Title>로그인</Title>
-        <Subtitle>영화 감상일지에 오신 것을 환영합니다</Subtitle>
-        
-        <Form onSubmit={handleSubmit}>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          
-          <InputGroup>
-            <Label>이메일</Label>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@email.com"
-            />
-          </InputGroup>
-
-          <InputGroup>
-            <Label>비밀번호</Label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력하세요"
-            />
-          </InputGroup>
-
-          <SubmitButton type="submit">로그인</SubmitButton>
-        </Form>
-
-        <SignupLink>
-          계정이 없으신가요? <Link to="/signup">회원가입</Link>
-        </SignupLink>
-      </FormCard>
-    </Container>
-  );
-};
-
 const Container = styled.div`
   min-height: calc(100vh - 80px);
   display: flex;
@@ -169,5 +105,71 @@ const SignupLink = styled.p`
     }
   }
 `;
+
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    const result = login(email, password);
+    if (result.success) {
+      navigate('/');
+    } else {
+      setError(result.message);
+    }
+  };
+
+  return (
+    <Container>
+      <FormCard>
+        <Title>로그인</Title>
+        <Subtitle>영화 감상일지에 오신 것을 환영합니다</Subtitle>
+        
+        <Form onSubmit={handleSubmit}>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          
+          <InputGroup>
+            <Label>이메일</Label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@email.com"
+            />
+          </InputGroup>
+
+          <InputGroup>
+            <Label>비밀번호</Label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호를 입력하세요"
+            />
+          </InputGroup>
+
+          <SubmitButton type="submit">로그인</SubmitButton>
+        </Form>
+
+        <SignupLink>
+          계정이 없으신가요? <Link to="/signup">회원가입</Link>
+        </SignupLink>
+      </FormCard>
+    </Container>
+  );
+};
+
 
 export default Login;

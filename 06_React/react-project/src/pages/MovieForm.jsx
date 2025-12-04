@@ -4,6 +4,188 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useMovies } from '../context/MovieContext';
 
+
+const Container = styled.div`
+  min-height: calc(100vh - 80px);
+  background: #f7fafc;
+  padding: 2rem;
+`;
+
+const FormCard = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 2.5rem;
+`;
+
+const Title = styled.h1`
+  font-size: 2.2rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+`;
+
+const Subtitle = styled.p`
+  color: #718096;
+  font-size: 1.05rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const InputRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const Label = styled.label`
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 1rem;
+`;
+
+const Input = styled.input`
+  padding: 0.9rem;
+  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
+  }
+`;
+
+const Select = styled.select`
+  padding: 0.9rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: #667eea;
+  }
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const StarButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
+const RatingText = styled.span`
+  margin-left: 0.5rem;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 1.1rem;
+`;
+
+const Textarea = styled.textarea`
+  padding: 1rem;
+  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
+  }
+`;
+
+const CharCount = styled.div`
+  text-align: right;
+  color: ${props => props.$warning ? '#fc8181' : '#a0aec0'};
+  font-size: 0.9rem;
+`;
+
+const ErrorText = styled.span`
+  color: #c53030;
+  font-size: 0.9rem;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
+
+const CancelButton = styled.button`
+  flex: 1;
+  padding: 1rem;
+  background: #e2e8f0;
+  color: #2d3748;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #cbd5e0;
+  }
+`;
+
+const SubmitButton = styled.button`
+  flex: 1;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+`;
+
+
 const MovieForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -196,185 +378,5 @@ const MovieForm = () => {
     </Container>
   );
 };
-
-const Container = styled.div`
-  min-height: calc(100vh - 80px);
-  background: #f7fafc;
-  padding: 2rem;
-`;
-
-const FormCard = styled.div`
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  padding: 3rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 2.5rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2.2rem;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-`;
-
-const Subtitle = styled.p`
-  color: #718096;
-  font-size: 1.05rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const InputRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const Label = styled.label`
-  color: #2d3748;
-  font-weight: 600;
-  font-size: 1rem;
-`;
-
-const Input = styled.input`
-  padding: 0.9rem;
-  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
-  }
-`;
-
-const Select = styled.select`
-  padding: 0.9rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.3s;
-
-  &:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-`;
-
-const RatingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const StarButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
-const RatingText = styled.span`
-  margin-left: 0.5rem;
-  color: #667eea;
-  font-weight: 600;
-  font-size: 1.1rem;
-`;
-
-const Textarea = styled.textarea`
-  padding: 1rem;
-  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
-  border-radius: 8px;
-  font-size: 1rem;
-  resize: vertical;
-  font-family: inherit;
-  line-height: 1.6;
-  transition: border-color 0.3s;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
-  }
-`;
-
-const CharCount = styled.div`
-  text-align: right;
-  color: ${props => props.$warning ? '#fc8181' : '#a0aec0'};
-  font-size: 0.9rem;
-`;
-
-const ErrorText = styled.span`
-  color: #c53030;
-  font-size: 0.9rem;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-`;
-
-const CancelButton = styled.button`
-  flex: 1;
-  padding: 1rem;
-  background: #e2e8f0;
-  color: #2d3748;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-
-  &:hover {
-    background: #cbd5e0;
-  }
-`;
-
-const SubmitButton = styled.button`
-  flex: 1;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-`;
 
 export default MovieForm;

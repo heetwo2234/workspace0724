@@ -1,31 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const NotFound = () => {
-  const navigate = useNavigate();
-
-  return (
-    <Container>
-      <Content>
-        <ErrorCode>404</ErrorCode>
-        <Icon>🎬</Icon>
-        <Title>페이지를 찾을 수 없습니다</Title>
-        <Message>
-          요청하신 페이지가 존재하지 않거나 삭제되었습니다.
-        </Message>
-        <ButtonGroup>
-          <HomeButton onClick={() => navigate('/')}>
-            홈으로 가기
-          </HomeButton>
-          <BackButton onClick={() => navigate(-1)}>
-            이전 페이지
-          </BackButton>
-        </ButtonGroup>
-      </Content>
-    </Container>
-  );
-};
-
 const Container = styled.div`
   min-height: calc(100vh - 80px);
   display: flex;
@@ -110,5 +85,31 @@ const BackButton = styled.button`
     color: white;
   }
 `;
+
+
+const NotFound = () => {
+  const navigate = useNavigate();
+
+  return (
+    <Container>
+      <Content>
+        <ErrorCode>404</ErrorCode>
+        <Icon>🎬</Icon>
+        <Title>페이지를 찾을 수 없습니다</Title>
+        <Message>
+          요청하신 페이지가 존재하지 않거나 삭제되었습니다.
+        </Message>
+        <ButtonGroup>
+          <HomeButton onClick={() => navigate('/')}>
+            홈으로 가기
+          </HomeButton>
+          <BackButton onClick={() => navigate(-1)}>
+            이전 페이지
+          </BackButton>
+        </ButtonGroup>
+      </Content>
+    </Container>
+  );
+};
 
 export default NotFound;

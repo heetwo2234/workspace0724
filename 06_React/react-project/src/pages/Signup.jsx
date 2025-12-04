@@ -3,6 +3,107 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 
+
+const Container = styled.div`
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+`;
+
+const FormCard = styled.div`
+  background: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 450px;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  text-align: center;
+`;
+
+const Subtitle = styled.p`
+  color: #718096;
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const Label = styled.label`
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.95rem;
+`;
+
+const Input = styled.input`
+  padding: 0.9rem;
+  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
+  }
+`;
+
+const ErrorText = styled.span`
+  color: #c53030;
+  font-size: 0.85rem;
+`;
+
+const SubmitButton = styled.button`
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin-top: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+`;
+
+const LoginLink = styled.p`
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #718096;
+
+  a {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -141,104 +242,5 @@ const Signup = () => {
   );
 };
 
-const Container = styled.div`
-  min-height: calc(100vh - 80px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-`;
-
-const FormCard = styled.div`
-  background: white;
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 450px;
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-  text-align: center;
-`;
-
-const Subtitle = styled.p`
-  color: #718096;
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const Label = styled.label`
-  color: #2d3748;
-  font-weight: 600;
-  font-size: 0.95rem;
-`;
-
-const Input = styled.input`
-  padding: 0.9rem;
-  border: 2px solid ${props => props.$hasError ? '#fc8181' : '#e2e8f0'};
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.$hasError ? '#fc8181' : '#667eea'};
-  }
-`;
-
-const ErrorText = styled.span`
-  color: #c53030;
-  font-size: 0.85rem;
-`;
-
-const SubmitButton = styled.button`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-  margin-top: 1rem;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-`;
-
-const LoginLink = styled.p`
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #718096;
-
-  a {
-    color: #667eea;
-    font-weight: 600;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
 
 export default Signup;
