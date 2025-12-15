@@ -36,7 +36,7 @@ public class ELOperationServlet extends HttpServlet {
 		request.setAttribute("strOne", "");
 		request.setAttribute("strTwo", "");
 		request.setAttribute("strThree", "hello");
-		
+
 		request.setAttribute("personOne", new Person("", 20, ""));
 		request.setAttribute("personTwo", null);
 		
